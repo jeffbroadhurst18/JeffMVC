@@ -1,0 +1,22 @@
+﻿@using JeffMVC.Models
+@model Picture
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Budapest";
+}
+
+	<div class="row">
+		<div class="col-md-6">
+			<h1>@Model.Name - @Model.Year</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			@foreach (var item in Model.Path)
+			{
+				<img src="@Url.Content(item)" class="picture" />
+			}
+		</div>
+	</div>
+
+
