@@ -41,3 +41,21 @@ body {
 	border-radius: 25px;
 	border: 1px solid darkgrey;
 }
+
+.weathertitle {
+	font-weight: bold;
+	vertical-align: text-top;
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+	padding: 10px 10px 10px 10px;
+}
+
+.weatheritem {
+	vertical-align: text-top;
+	padding: 10px 10px 10px 10px;
+	font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.weathertable {
+	border-radius:25px;
+	background-color:goldenrod;
+}

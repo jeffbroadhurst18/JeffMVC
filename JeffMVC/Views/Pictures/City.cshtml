@@ -1,18 +1,18 @@
 ﻿@using JeffMVC.Models
-@model PicturesAndWeatherContext
+@model Picture
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
-	ViewData["Title"] = "New York";
+	ViewData["Title"] = @ViewBag.Title;
 }
 
 <div class="row">
 	<div class="col-md-6">
-		<h1>@Model.Pictures.ToList()[0].Name - @Model.Pictures.ToList()[0].Year</h1>
+		<h1>@Model.Name - @Model.Year</h1>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-6">
-		@foreach (var item in Model.Pictures.ToList()[0].Path)
+		@foreach (var item in Model.Path)
 		{
 			<img src="@Url.Content(item)" class="picture" />
 		}

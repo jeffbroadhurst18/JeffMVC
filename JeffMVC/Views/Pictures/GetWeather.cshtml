@@ -7,12 +7,12 @@
 <h2>
 	@ViewBag.EventsTitle
 </h2>
-<table>
+<table class="weathertable">
 	@foreach (var item in Model)
 	{
-		<tr>
-			<td>@item.title</td>
-			<td>@item.f</td>
+		<tr class="weatherrow">
+			<td class="weathertitle">@item.title</td>
+			<td class="weatheritem">@item.f</td>
 		</tr>
 	}
 </table>

@@ -34,6 +34,13 @@ namespace JeffMVC.Controllers
 			return View(ctx);
 		}
 
+		public IActionResult City(int id)
+		{
+			var city = ctx.GetPicture(id);
+			ViewBag.Title = city.Name;
+			return View(city);
+		}
+
 		public IActionResult GetWeather()
 		{
 			ViewBag.EventsTitle = "Weather";

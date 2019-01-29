@@ -53,7 +53,7 @@ namespace JeffMVC.Models
 			return forecasts.ToList();
 		}
 
-		private Picture GetPicture(int id)
+		public Picture GetPicture(int id)
 		{
 			Picture pictures;
 			string[] photos;
@@ -97,7 +97,7 @@ namespace JeffMVC.Models
 					};
 					break;
 			}
-			
+			pictures.Forecasts = GetForecast().Result;
 			return getTwoPictures(pictures);
 		}
 
@@ -121,14 +121,10 @@ namespace JeffMVC.Models
 
 	public class Picture
 	{
-		
-
 		public string Name { get; set; }
 		public int Year { get; set; }
 		public List<string> Path { get; set; }
-		
-
-		
+		public List<Forecast> Forecasts { get; set; }
 	}
 
 	public class Period
