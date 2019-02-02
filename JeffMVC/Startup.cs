@@ -38,6 +38,10 @@ namespace JeffMVC
 
 			services.AddDbContext<HolidayContext>(options =>
 					options.UseSqlServer(Configuration.GetConnectionString("HolidayContext")));
+
+			services.AddScoped<PicturesAndWeatherContext>();
+			services.AddScoped<FamilyContext>();
+		
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

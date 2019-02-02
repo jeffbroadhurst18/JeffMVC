@@ -12,31 +12,16 @@ namespace JeffMVC.Controllers
 {
 	public class PicturesController : Controller
 	{
-		PicturesAndWeatherContext ctx;
+		PicturesAndWeatherContext _ctx;
 
-		public PicturesController()
+		public PicturesController(PicturesAndWeatherContext ctx)
 		{
-			ctx = new PicturesAndWeatherContext();
-		}
-
-		public IActionResult NewYork()
-		{
-			return View(ctx);
-		}
-
-		public IActionResult Roma()
-		{
-			return View(ctx);
-		}
-
-		public IActionResult Budapest()
-		{
-			return View(ctx);
+			_ctx = ctx;
 		}
 
 		public IActionResult City(int id)
 		{
-			var city = ctx.GetPicture(id);
+			var city = _ctx.GetPicture(id);
 			ViewBag.Title = city.Name;
 			return View(city);
 		}
@@ -44,7 +29,7 @@ namespace JeffMVC.Controllers
 		public IActionResult GetWeather()
 		{
 			ViewBag.EventsTitle = "Weather";
-			return PartialView(ctx);
+			return PartialView(_ctx);
 		}
 
 

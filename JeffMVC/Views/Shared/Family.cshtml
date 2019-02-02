@@ -1,0 +1,19 @@
+﻿@*
+	For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using JeffMVC.Models
+@model FamilyContext
+
+<h2>
+	@ViewBag.EventsTitle
+</h2>
+<table class="table table-bordered table-condensed">
+	<tr><th>Name</th><th>Date of Birth</th></tr>
+	@foreach (var item in Model.FamilyMembers)
+	{
+		<tr>
+			<td>@item.Name</td>
+			<td>@item.DoB.ToString("dd/MM/yyyy")</td>
+		</tr>
+	}
+</table>
