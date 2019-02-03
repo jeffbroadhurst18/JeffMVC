@@ -148,5 +148,20 @@ namespace JeffMVC.Controllers
         {
             return _context.Holidays.Any(e => e.Id == id);
         }
+
+		public async Task<IActionResult> Search(int? minscore)
+		{
+			var hols = new List<Holiday>();
+			ViewBag.Minscore = minscore;
+
+			if (minscore == null || minscore == 0)
+			{
+				return View(hols);
+			}
+
+			hols = await _context.Holidays.Where(h => h.Score >= minscore).ToListAsync();
+			ViewBag.Numrows = hols.Count;
+			return View(hols);
+		}
     }
 }

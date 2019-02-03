@@ -1,0 +1,59 @@
+﻿@using JeffMVC.Models;
+@model IEnumerable<Holiday>;
+
+@{
+	ViewData["Title"] = "Search";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Search</h2>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+	(function () {
+		window.onload = function () {
+			nr = document.getElementById("numrows").innerHTML;
+			if (nr == 0) {
+				document.getElementById("results").hidden = true;
+				document.getElementById("noresults").classList = "noresultsshow";
+			} 
+		}
+	}
+	)();
+</script>
+
+<form action="/Holidays/Search" method="post">
+	<fieldset>
+		<label for="minscore">Min Score</label><br />
+		<input name="minscore" id="minscore" type="number" />
+		<button type="submit">Submit</button>
+	</fieldset>
+</form>
+<div id="noresults" class="noresultshide">No Results</div>
+<div id="results">
+	<div>Minimum Score of: @ViewBag.Minscore</div>
+	<div id="numrows" style="visibility:hidden;">@ViewBag.Numrows</div>
+
+	<table class="table table-bordered holidaytable">
+		<tr>
+			<th>City</th>
+			<th>Year</th>
+			<th>Score</th>
+		</tr>
+
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@item.City
+				</td>
+				<td>
+					@item.Year
+				</td>
+				<td>
+					@item.Score
+				</td>
+			</tr>
+		}
+	</table>
+</div>

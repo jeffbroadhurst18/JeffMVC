@@ -60,3 +60,20 @@ body {
 	border-radius:25px;
 	background-color:goldenrod;
 }
+
+.holidaytable {
+	width:40%;
+	margin-top:50px;
+}
+
+.holidaytable td {
+	width:30%;
+}
+
+.noresultshide {
+	display:none;
+}
+
+.noresultsshow {
+	display: normal;
+}
