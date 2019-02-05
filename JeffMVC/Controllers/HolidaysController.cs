@@ -12,11 +12,14 @@ namespace JeffMVC.Controllers
     public class HolidaysController : Controller
     {
         private readonly HolidayContext _context;
-
+		public List<SortOption> sortOptions = new List<SortOption>();
+		
         public HolidaysController(HolidayContext context)
         {
             _context = context;
-        }
+			sortOptions.Add(new SortOption { Id = 1, optionName = "Year" });
+			sortOptions.Add(new SortOption { Id = 2, optionName = "Score" });
+		}
 
         // GET: Holidays
         public async Task<IActionResult> Index()
@@ -149,19 +152,31 @@ namespace JeffMVC.Controllers
             return _context.Holidays.Any(e => e.Id == id);
         }
 
-		public async Task<IActionResult> Search(int? minscore)
+		public async Task<IActionResult> Search(int? minscore, int? selectedoption)
 		{
 			var hols = new List<Holiday>();
+
+			ViewBag.LastSelectedOption = selectedoption ?? 1;
 			ViewBag.Minscore = minscore;
+			ViewBag.SortOptions = sortOptions;
 
 			if (minscore == null || minscore == 0)
 			{
 				return View(hols);
 			}
 
-			hols = await _context.Holidays.Where(h => h.Score >= minscore).ToListAsync();
+			if (selectedoption == (int?)SortOptions.Year)
+			{
+				hols = await _context.Holidays.Where(h => h.Score >= minscore).OrderByDescending(y => y.Year).ToListAsync();
+			} else
+			{
+				hols = await _context.Holidays.Where(h => h.Score >= minscore).OrderByDescending(s => s.Score).ToListAsync();
+			}
+						
 			ViewBag.Numrows = hols.Count;
 			return View(hols);
 		}
+
+		
     }
 }

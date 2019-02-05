@@ -17,6 +17,12 @@
 				document.getElementById("results").hidden = true;
 				document.getElementById("noresults").classList = "noresultsshow";
 			} 
+			ls = document.getElementById("lastselected").innerHTML;
+			if (ls == "1") {
+				document.getElementById("item-1").checked = true;
+			} else {
+				document.getElementById("item-2").checked = true;
+			}
 		}
 	}
 	)();
@@ -24,7 +30,12 @@
 
 <form action="/Holidays/Search" method="post">
 	<fieldset>
-		<label for="minscore">Min Score</label><br />
+		@foreach (var item in ViewBag.SortOptions)
+		{
+			<input id="item-@item.Id" name="selectedoption" for="selectedoption" type="radio" value="@item.Id" /> @item.optionName
+		}
+		
+		<br /><label for="minscore">Min Score</label><br />
 		<input name="minscore" id="minscore" type="number" />
 		<button type="submit">Submit</button>
 	</fieldset>
@@ -57,3 +68,4 @@
 		}
 	</table>
 </div>
+<div id="lastselected">@ViewBag.LastSelectedOption</div>

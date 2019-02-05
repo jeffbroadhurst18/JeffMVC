@@ -63,7 +63,7 @@ body {
 
 .holidaytable {
 	width:40%;
-	margin-top:50px;
+	margin-top:30px;
 }
 
 .holidaytable td {
@@ -76,4 +76,8 @@ body {
 
 .noresultsshow {
 	display: normal;
+}
+
+#lastselected {
+	visibility:hidden;
 }
