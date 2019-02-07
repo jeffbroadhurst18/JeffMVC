@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using JeffMVC.Models;
+using JeffMVC.Filters;
 
 namespace JeffMVC.Controllers
 {
-    public class HolidaysController : Controller
+	public class HolidaysController : Controller
     {
         private readonly HolidayContext _context;
 		public List<SortOption> sortOptions = new List<SortOption>();
 		
-        public HolidaysController(HolidayContext context)
-        {
+		public HolidaysController(HolidayContext context)
+		{
             _context = context;
 			sortOptions.Add(new SortOption { Id = 1, optionName = "Year" });
 			sortOptions.Add(new SortOption { Id = 2, optionName = "Score" });
@@ -152,6 +151,7 @@ namespace JeffMVC.Controllers
             return _context.Holidays.Any(e => e.Id == id);
         }
 
+		[Logging]
 		public async Task<IActionResult> Search(int? minscore, int? selectedoption)
 		{
 			var hols = new List<Holiday>();
