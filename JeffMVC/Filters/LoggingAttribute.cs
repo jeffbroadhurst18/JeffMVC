@@ -5,7 +5,7 @@ namespace JeffMVC.Filters
 {
 	public class LoggingAttribute : ActionFilterAttribute
 	{
-		private readonly NLog.ILogger _logger = LogManager.GetCurrentClassLogger();
+		private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
 		public LoggingAttribute()
 		{
@@ -15,7 +15,7 @@ namespace JeffMVC.Filters
 		public override void OnResultExecuted(ResultExecutedContext context)
 		{
 		
-			_logger.Log(NLog.LogLevel.Debug, context.ActionDescriptor.DisplayName);
+			_logger.Log(LogLevel.Debug, context.ActionDescriptor.DisplayName);
 			var returnData = ((Microsoft.AspNetCore.Mvc.ViewResult)context.Result).ViewData;
 
 			var conc = string.Empty;
@@ -24,7 +24,7 @@ namespace JeffMVC.Filters
 				conc += $"({item.Key},{item.Value})";
 			}
 
-			_logger.Log(NLog.LogLevel.Debug, $"Parameters = {conc}");
+			_logger.Log(LogLevel.Debug, $"Parameters = {conc}");
 			base.OnResultExecuted(context);
 		}
 	}
