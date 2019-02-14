@@ -1,0 +1,31 @@
+﻿@using JeffMVC.Models;
+@model IEnumerable<TideData>;
+
+@{
+	ViewData["Title"] = "Tides";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Tides</h2>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Event Type</th>
+			<th>Date-Time</th>
+			<th>Approx Time?</th>
+			<th>Approx Height?</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+		<tr>
+			<td>@item.EventType</td>
+			<td>@item.DateTime</td>
+			<td>@item.IsApproximateTime</td>
+			<td>@item.IsApproximateHeight</td>
+		</tr>
+		}
+	</tbody>
+</table>

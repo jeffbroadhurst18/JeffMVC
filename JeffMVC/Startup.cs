@@ -43,7 +43,7 @@ namespace JeffMVC
 
 			services.AddScoped<PicturesAndWeatherContext>();
 			services.AddScoped<FamilyContext>();
-			
+			services.AddScoped<TidesContext>();
 
 		}
 
