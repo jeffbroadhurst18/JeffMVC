@@ -1,0 +1,51 @@
+﻿@using JeffMVC.Models;
+@model TidesContext;
+
+@{
+	ViewData["Title"] = "Tides";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script>
+	(function () {
+		window.onload = function () {
+			nr = document.getElementById("selectedvalue").innerHTML;
+			if (nr == "0") {
+				document.getElementById("tidestable").hidden = true;
+			}
+		}
+	}
+	)();
+</script>
+
+<h2>Tides</h2>
+
+<form action="/Tides/Get" method="post">
+	<fieldset>
+		@Html.DropDownList("selectedstation",
+							 Model.stationlist,
+							"Select Station",
+							new { @class = "form-control" })
+		<br />
+		<button type="submit">Submit</button>
+	</fieldset>
+</form>
+
+<table class="table" id="tidestable">
+	<thead>
+		<tr>
+			<th>Tide</th>
+			<th>Date & Time </th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.tides)
+		{
+			<tr>
+				<td>@item.EventType</td>
+				<td>@item.DateTime.ToString("dd-MM-yyyy hh:mm")</td>
+			</tr>
+		}
+	</tbody>
+</table>
+<div id="selectedvalue" style="visibility:hidden;">@Model.selectedstation</div>
