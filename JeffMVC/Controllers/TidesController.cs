@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using JeffMVC.Filters;
+﻿using JeffMVC.Filters;
 using JeffMVC.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace JeffMVC.Controllers
 {
-    public class TidesController : Controller
+	public class TidesController : Controller
     {
 		TidesContext _ctx;
-		//IEnumerable<SelectListItem> stations;
 
 		public TidesController(TidesContext ctx)
 		{
