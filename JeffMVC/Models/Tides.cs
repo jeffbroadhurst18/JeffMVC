@@ -17,7 +17,13 @@ namespace JeffMVC.Models
 		private IEnumerable<SelectListItem> _stationlist = null;
 		private IEnumerable<TideData> _tides = null;
 		private string _selectedstation = null;
+		private List<double> _coords = null;
 		public string selectedstation { get => _selectedstation ?? (_selectedstation = "0"); set => _selectedstation = value; }
+
+		public List<double> coords
+		{
+			get => _coords ?? (_coords = GetCoords(selectedstation).Result.ToList());
+		}
 
 		public IEnumerable<SelectListItem> stationlist
 		{
@@ -32,14 +38,14 @@ namespace JeffMVC.Models
 		private async Task<TideData[]> GetTideData(string loc)
 		{
 			if (loc == "0") {
-				List<TideData> tideList = new List<TideData>();
-				tideList.Add(new TideData { EventType = "No data" });
+				List<TideData> tideList = new List<TideData>
+				{
+					new TideData { EventType = "No data" }
+				};
 				return tideList.ToArray();
 			}
 
-			client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "fbade2ef0cb5465f9311c724a5e75e01");
-			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+			SetHeader();
 
 			var url = $"https://admiraltyapi.azure-api.net/uktidalapi/api/V1/Stations/{loc}/TidalEvents";
 			var json = client.GetStringAsync(url);
@@ -72,11 +78,32 @@ namespace JeffMVC.Models
 			
 		}
 
-		private async Task<StationData> GetStationData()
+		private async Task<IEnumerable<double>> GetCoords(string selstat)
+		{
+			if (selstat == "0")
+			{
+				return new List<double>
+				{
+					0.00
+				};
+			}
+
+			SetHeader();
+
+			var stationData = JsonConvert.DeserializeObject<IndividualStation>(await client.GetStringAsync($"https://admiraltyapi.azure-api.net/uktidalapi/api/V1/Stations/{selstat}"));
+			return stationData.geometry.coordinates;
+		}
+
+		private static void SetHeader()
 		{
 			client.DefaultRequestHeaders.Accept.Clear();
 			client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "fbade2ef0cb5465f9311c724a5e75e01");
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+		}
+
+		private async Task<StationData> GetStationData()
+		{
+			SetHeader();
 
 			return JsonConvert.DeserializeObject<StationData>(await client.GetStringAsync("https://admiraltyapi.azure-api.net/uktidalapi/api/V1/Stations"));
 		}
@@ -124,5 +151,12 @@ namespace JeffMVC.Models
 	{
 		public string type { get; set; }
 		public List<Feature> features { get; set; }
+	}
+
+	public class IndividualStation
+	{
+		public string type { get; set; }
+		public Geometry geometry { get; set; }
+		public Properties properties { get; set; }
 	}
 }

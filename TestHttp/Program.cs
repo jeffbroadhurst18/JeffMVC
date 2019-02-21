@@ -17,11 +17,11 @@ namespace TestHttp
 
 
 			//var answer = await ProcessRepositories();
-			var data = await GetSeaData();
+			var data = await GetSeaData("0324");
 			var tides = await GetTideData("0462");
 		}
 
-		private static async Task<RootObject> GetSeaData()
+		private static async Task<RootObject> GetSeaData(string loc)
 		{
 			client.DefaultRequestHeaders.Accept.Clear();
 			//client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
@@ -29,7 +29,7 @@ namespace TestHttp
 			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 
-			var json = client.GetStringAsync("https://admiraltyapi.azure-api.net/uktidalapi/api/V1/Stations");
+			var json = client.GetStringAsync($"https://admiraltyapi.azure-api.net/uktidalapi/api/V1/Stations/{loc}");
 			var y = await json;
 			var x = JsonConvert.DeserializeObject<RootObject>(y);
 			return x;

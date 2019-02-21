@@ -49,3 +49,7 @@
 	</tbody>
 </table>
 <div id="selectedvalue" style="visibility:hidden;">@Model.selectedstation</div>
+@foreach (var item in Model.coords)
+{
+	<div>@item</div>
+}
