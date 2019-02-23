@@ -42,6 +42,7 @@ namespace JeffMVC.Models
 				{
 					new TideData { EventType = "No data" }
 				};
+
 				return tideList.ToArray();
 			}
 
@@ -49,7 +50,8 @@ namespace JeffMVC.Models
 
 			var url = $"https://admiraltyapi.azure-api.net/uktidalapi/api/V1/Stations/{loc}/TidalEvents";
 			var json = client.GetStringAsync(url);
-			return JsonConvert.DeserializeObject<TideData[]>(await json);
+			var allTides = JsonConvert.DeserializeObject<TideData[]>(await json);
+			return allTides.Skip(4).Take(8).ToArray();
 		}
 
 		public async Task<IEnumerable<TideData>> GetTides(string id)
@@ -74,7 +76,7 @@ namespace JeffMVC.Models
 				dictionary.Add(station.properties.Id, station.properties.Name);
 			}
 
-			return dictionary.ToSelectListItems(selectedId);
+			return dictionary.ToSelectListItems(selectedId).OrderBy(p => p.Text);
 			
 		}
 

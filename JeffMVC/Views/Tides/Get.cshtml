@@ -12,44 +12,98 @@
 			nr = document.getElementById("selectedvalue").innerHTML;
 			if (nr == "0") {
 				document.getElementById("tidestable").hidden = true;
+				return;
 			}
+			initMap();
 		}
 	}
 	)();
-</script>
 
-<h2>Tides</h2>
+	function initMap() {
+		var x = document.getElementById("coord0").innerHTML;
+		var y = document.getElementById("coord1").innerHTML;
 
-<form action="/Tides/Get" method="post">
-	<fieldset>
-		@Html.DropDownList("selectedstation",
-							 Model.stationlist,
-							"Select Station",
-							new { @class = "form-control" })
-		<br />
-		<button type="submit">Submit</button>
-	</fieldset>
-</form>
-
-<table class="table" id="tidestable">
-	<thead>
-		<tr>
-			<th>Tide</th>
-			<th>Date & Time </th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model.tides)
-		{
-			<tr>
-				<td>@item.EventType</td>
-				<td>@item.DateTime.ToString("dd-MM-yyyy hh:mm")</td>
-			</tr>
+		if (x == 0) {
+			document.getElementById("map-container").classList = "map-hidden map-container";
+			return;
 		}
-	</tbody>
-</table>
-<div id="selectedvalue" style="visibility:hidden;">@Model.selectedstation</div>
-@foreach (var item in Model.coords)
-{
-	<div>@item</div>
-}
+
+		document.getElementById("map-container").classList = "map-visible map-container";
+
+		var position = new google.maps.LatLng(x, y);
+		var map = new google.maps.Map(
+			document.getElementById('map-container'),
+			{
+				center: position,
+				zoom: 8,
+			}
+		);
+		var marker = new google.maps.Marker(
+			{
+				position: position,
+				map: map
+			}
+		);
+	}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHKhlPIDo7ZU8sUzlcTfRkI3xCjbGJ78s&callback=initMap"></script>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-offset-1 col-md-4">
+			<h2>Tides</h2>
+
+			<form action="/Tides/Get" method="post">
+				<fieldset>
+					@Html.DropDownList("selectedstation",
+									  Model.stationlist,
+									 "Select Station",
+									 new { @class = "form-control" })
+					<br />
+					<button type="submit">Submit</button>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-offset-1 col-md-4">
+			<div>
+				<div id="map-container" class="map-container map-hidden">bbb</div>
+			</div>
+		</div>
+
+		<div class="col-md-offset-1 col-md-4">
+			<table class="table table-striped table-bordered" id="tidestable">
+				<thead>
+					<tr>
+						<th>Tide</th>
+						<th>Date & Time </th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.tides)
+					{
+						<tr>
+							<td>@item.EventType</td>
+							<td>@item.DateTime.ToString("dd-MM-yyyy HH:mm")</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+			<div id="selectedvalue" style="visibility:hidden;">@Model.selectedstation</div>
+
+			@{
+				bool records = Model.coords.Count > 1;
+				double xcoord = records ? Model.coords[1] : 0;
+				double ycoord = records ? Model.coords[0] : 0;
+			}
+
+
+			<div style="visibility:hidden;">
+				<div id="coord0">@xcoord</div>
+				<div id="coord1">@ycoord</div>
+			</div>
+		</div>
+	</div>
+</div>
+
