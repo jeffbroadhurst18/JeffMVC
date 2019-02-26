@@ -24,5 +24,22 @@ namespace JeffMVC.Extensions
 			}
 			return selectListItems;
 		}
+
+
+		public static IEnumerable<SelectListItem> ToSelectListItems(
+			this IDictionary<int, string> dict, int selectedId)
+		{
+			List<SelectListItem> selectListItems = new List<SelectListItem>();
+			foreach (var item in dict)
+			{
+				selectListItems.Add(new SelectListItem
+				{
+					Selected = item.Key == selectedId,
+					Text = item.Value,
+					Value = item.Key.ToString()
+				});
+			}
+			return selectListItems;
+		}
 	}
 }

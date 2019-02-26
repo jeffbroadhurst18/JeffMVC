@@ -41,9 +41,13 @@ namespace JeffMVC
 			services.AddDbContext<HolidayContext>(options =>
 					options.UseSqlServer(Configuration.GetConnectionString("HolidayContext")));
 
+			services.AddDbContext<ResourceContext>(options =>
+					options.UseSqlServer(Configuration.GetConnectionString("ResourceContext")));
+
 			services.AddScoped<PicturesAndWeatherContext>();
 			services.AddScoped<FamilyContext>();
 			services.AddScoped<TidesContext>();
+			
 
 		}
 

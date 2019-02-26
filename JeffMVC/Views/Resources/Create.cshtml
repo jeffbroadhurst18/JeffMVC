@@ -1,0 +1,45 @@
+﻿@model JeffMVC.Models.ResourceEvent
+
+@{
+	ViewData["Title"] = "View";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View</h2>
+
+<h4>ResourceEvent</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form asp-action="View">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="EventDate" class="control-label"></label>
+				<input asp-for="EventDate" class="form-control" />
+				<span asp-validation-for="EventDate" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				@Html.DisplayNameFor(m => m.Resource)
+				@Html.DropDownListFor(m => m.Resource,
+									  (IEnumerable<SelectListItem>)ViewBag.resourcelist,
+									 "Select Resource",
+									 new { @class = "form-control" })
+			</div>
+			<div>
+				@Html.DisplayNameFor(m => m.Person)
+				@Html.DropDownListFor(m => m.Person,
+										  (IEnumerable<SelectListItem>)ViewBag.personlist,
+									"Select Person",
+									 new { @class = "form-control" })
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-default" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-action="Index">Back to List</a>
+</div>
+
