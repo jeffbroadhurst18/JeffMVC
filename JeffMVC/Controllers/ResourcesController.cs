@@ -17,6 +17,7 @@ namespace JeffMVC.Controllers
 		public ResourcesController(ResourceContext resourceContext)
 		{
 			_resourceContext = resourceContext;
+			
 		}
 
 		public IActionResult Index()
@@ -28,14 +29,14 @@ namespace JeffMVC.Controllers
 		// GET: Holidays/Create
 		public IActionResult Create()
 		{
-			ViewBag.resourcelist = GetResources();
-			ViewBag.personlist = GetPersons();
+			ViewBag.resourcelist = GetResources(0);
+			ViewBag.personlist = GetPersons(0);
 			return View();
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Id,Resource,Person,EventDate")] ResourceEvent resourceEvent)
+		public async Task<IActionResult> Create([Bind("ResourceId,PersonId,EventDate")] ResourceEvent resourceEvent)
 		{
 			if (ModelState.IsValid)
 			{
@@ -47,7 +48,107 @@ namespace JeffMVC.Controllers
 			return View(resourceEvent);
 		}
 
-		private IEnumerable<SelectListItem> GetResources()
+		// GET: Holidays/Edit/5
+		public async Task<IActionResult> Edit(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var resourceEvent = await _resourceContext.ResourceEvents.FindAsync(id);
+			if (resourceEvent == null)
+			{
+				return NotFound();
+			}
+
+			ViewBag.resourcelist = GetResources(resourceEvent.ResourceId);
+			ViewBag.personlist = GetPersons(resourceEvent.PersonId);
+			
+			return View(resourceEvent);
+		}
+
+		// POST: Holidays/Edit/5
+		// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(int id, [Bind("Id,ResourceId,PersonId,EventDate")] ResourceEvent resourceEvent)
+		{
+			if (id != resourceEvent.Id)
+			{
+				return NotFound();
+			}
+
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					_resourceContext.Update(resourceEvent);
+					await _resourceContext.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!ResourceEventExists(resourceEvent.Id))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
+				return RedirectToAction(nameof(Index));
+			}
+			return View(resourceEvent);
+		}
+
+		public async Task<IActionResult> Details(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var resourceEvent = await _resourceContext.ResourceEvents.Include(r => r.Resource).Include(p => p.Person)
+				.FirstOrDefaultAsync(m => m.Id == id);
+			if (resourceEvent == null)
+			{
+				return NotFound();
+			}
+
+			return View(resourceEvent);
+		}
+
+		public async Task<IActionResult> Delete(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var resourceEvent = await _resourceContext.ResourceEvents.Include(r => r.Resource).Include(p => p.Person)
+				.FirstOrDefaultAsync(m => m.Id == id);
+			if (resourceEvent == null)
+			{
+				return NotFound();
+			}
+
+			return View(resourceEvent);
+		}
+
+		// POST: Holidays/Delete/5
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
+			var resourceEvent = await _resourceContext.ResourceEvents.FindAsync(id);
+			_resourceContext.ResourceEvents.Remove(resourceEvent);
+			await _resourceContext.SaveChangesAsync();
+			return RedirectToAction(nameof(Index));
+		}
+
+		private IEnumerable<SelectListItem> GetResources(int resourceId)
 		{
 
 			var resources = _resourceContext.Resources.OrderBy(o => o.ResourceTitle);
@@ -59,11 +160,11 @@ namespace JeffMVC.Controllers
 				dictionary.Add(resource.Id, resource.ResourceTitle);
 			}
 
-			return dictionary.ToSelectListItems(0);
-
+			var items = dictionary.ToSelectListItems(resourceId);
+			return items;
 		}
 
-		private IEnumerable<SelectListItem> GetPersons()
+		private IEnumerable<SelectListItem> GetPersons(int personId)
 		{
 
 			var persons = _resourceContext.Persons.OrderBy(o => o.Name);
@@ -75,8 +176,14 @@ namespace JeffMVC.Controllers
 				dictionary.Add(person.Id, person.Name);
 			}
 
-			return dictionary.ToSelectListItems(0);
+			var items = dictionary.ToSelectListItems(personId);
+			return items;
 
+		}
+
+		private bool ResourceEventExists(int id)
+		{
+			return _resourceContext.ResourceEvents.Any(e => e.Id == id);
 		}
 	}
 }

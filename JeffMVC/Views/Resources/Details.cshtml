@@ -1,0 +1,37 @@
+﻿@model JeffMVC.Models.ResourceEvent
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ResourceEvent</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.EventDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EventDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Resource)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Resource.ResourceTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Person)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Person.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
