@@ -9,22 +9,22 @@ using JeffMVC.Models;
 
 namespace JeffMVC.Controllers
 {
-    public class ResourcesController : Controller
+    public class PeopleController : Controller
     {
         private readonly ResourceContext _context;
 
-        public ResourcesController(ResourceContext context)
+        public PeopleController(ResourceContext context)
         {
             _context = context;
         }
 
-        // GET: Resources
+        // GET: People
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Resources.ToListAsync());
+            return View(await _context.Persons.ToListAsync());
         }
 
-        // GET: Resources/Details/5
+        // GET: People/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +32,40 @@ namespace JeffMVC.Controllers
                 return NotFound();
             }
 
-            var resource = await _context.Resources
+            var person = await _context.Persons
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (resource == null)
+            if (person == null)
             {
                 return NotFound();
             }
 
-            return View(resource);
+            return View(person);
         }
 
-        // GET: Resources/Create
+        // GET: People/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Resources/Create
+        // POST: People/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ResourceTitle")] Resource resource)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Person person)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(resource);
+                _context.Add(person);
                 await _context.SaveChangesAsync();
 				return RedirectToAction("Index", "ResourceEvents");
 			}
-			return View(resource);
+			
+			return View(person);
 		}
 
-        // GET: Resources/Edit/5
+        // GET: People/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +73,22 @@ namespace JeffMVC.Controllers
                 return NotFound();
             }
 
-            var resource = await _context.Resources.FindAsync(id);
-            if (resource == null)
+            var person = await _context.Persons.FindAsync(id);
+            if (person == null)
             {
                 return NotFound();
             }
-            return View(resource);
+            return View(person);
         }
 
-        // POST: Resources/Edit/5
+        // POST: People/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ResourceTitle")] Resource resource)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Person person)
         {
-            if (id != resource.Id)
+            if (id != person.Id)
             {
                 return NotFound();
             }
@@ -96,12 +97,12 @@ namespace JeffMVC.Controllers
             {
                 try
                 {
-                    _context.Update(resource);
+                    _context.Update(person);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ResourceExists(resource.Id))
+                    if (!PersonExists(person.Id))
                     {
                         return NotFound();
                     }
@@ -112,10 +113,10 @@ namespace JeffMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(resource);
+            return View(person);
         }
 
-        // GET: Resources/Delete/5
+        // GET: People/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +124,30 @@ namespace JeffMVC.Controllers
                 return NotFound();
             }
 
-            var resource = await _context.Resources
+            var person = await _context.Persons
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (resource == null)
+            if (person == null)
             {
                 return NotFound();
             }
 
-            return View(resource);
+            return View(person);
         }
 
-        // POST: Resources/Delete/5
+        // POST: People/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var resource = await _context.Resources.FindAsync(id);
-            _context.Resources.Remove(resource);
+            var person = await _context.Persons.FindAsync(id);
+            _context.Persons.Remove(person);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ResourceExists(int id)
+        private bool PersonExists(int id)
         {
-            return _context.Resources.Any(e => e.Id == id);
+            return _context.Persons.Any(e => e.Id == id);
         }
     }
 }

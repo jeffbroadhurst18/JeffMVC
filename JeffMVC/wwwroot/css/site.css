@@ -112,3 +112,8 @@ body {
 .table-striped {
 	border: 2px ridge darkgray;
 }
+
+.resourceevent-menu {
+	float: left;
+	margin-right: 50px;
+}
