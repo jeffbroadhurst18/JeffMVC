@@ -51,4 +51,10 @@ namespace JeffMVC.Models
 		public int Id { get; set; }
 		public string Name { get; set; }
 	}
+
+	public class ResourceEventModel
+	{
+		public DateTime resourceEventModelDate { get; set; }
+		public List<ResourceEvent> resourceEventModelBookings { get; set; }
+	}
 }

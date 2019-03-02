@@ -117,3 +117,17 @@ body {
 	float: left;
 	margin-right: 50px;
 }
+
+.red {
+	background-color: red;
+	color:red;
+}
+
+.blue {
+	background-color: blue;
+	color:blue;
+}
+
+.col {
+	width:20%;
+}

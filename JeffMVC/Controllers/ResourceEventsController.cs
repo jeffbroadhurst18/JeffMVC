@@ -20,7 +20,7 @@ namespace JeffMVC.Controllers
 
 		}
 
-		public IActionResult Index(int? monthid = null)
+		public IActionResult IndexOld(int? monthid = null)
 		{
 			int selectedMonthId = monthid ?? DateTime.Now.Month;
 
@@ -61,6 +61,46 @@ namespace JeffMVC.Controllers
 
 			return View(monthEvents);
 		}
+
+		public IActionResult Index(int? monthid = null)
+		{
+			int selectedMonthId = monthid ?? DateTime.Now.Month;
+
+			ViewBag.monthlist = GetMonths(selectedMonthId);
+
+			var currentYear = DateTime.Now.Year;
+			var lastDay = DateTime.DaysInMonth(currentYear, (int)selectedMonthId);
+			var startDate = new DateTime(currentYear, (int)selectedMonthId, 1);
+			var lastDate = new DateTime(currentYear, (int)selectedMonthId, lastDay);
+
+			IEnumerable<ResourceEvent> resourceEvents = _resourceContext.ResourceEvents
+				.Where(x => x.EventDate >= startDate && x.EventDate <= lastDate)
+				.Include(h => h.Person).Include(z => z.Resource).OrderBy(d => d.EventDate);
+
+			List<ResourceEventModel> monthEvents = new List<ResourceEventModel>();
+			DateTime displayedDate = startDate;
+			do
+			{
+				var todaysData = resourceEvents.Where(q => q.EventDate == displayedDate);
+
+				ResourceEventModel res = new ResourceEventModel
+				{
+					resourceEventModelDate = displayedDate,
+					resourceEventModelBookings = new List<ResourceEvent>()
+				};
+				foreach (var item in resourceEvents)
+				{
+					res.resourceEventModelBookings.Add(item);
+				}
+				monthEvents.Add(res); 
+
+				displayedDate = displayedDate.AddDays(1);
+			} while (displayedDate <= lastDate);
+
+			return View(monthEvents);
+		}
+
+
 
 		// GET: Holidays/Create
 		public IActionResult Create()

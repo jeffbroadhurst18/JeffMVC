@@ -1,5 +1,5 @@
 ﻿@using JeffMVC.Models;
-@model IEnumerable<ResourceEvent>
+@model IEnumerable<ResourceEventModel>
 
 @{
 	ViewData["Title"] = "Index";
@@ -7,6 +7,28 @@
 }
 
 <h2>Index</h2>
+
+<script>
+	(function () {
+		window.onload = function () {
+			squares = $(".square");
+
+			$('#resourceEventTable > tbody  > tr > td > div').each(function () {
+				if (this.innerHTML == "red") {
+					this.classList.add("red");
+				} else {
+					this.classList.remove("red");
+				}
+				if (this.innerHTML == "blue") {
+					this.classList.add("blue");
+				} else {
+					this.classList.remove("blue");
+				}
+			});
+		}
+	}
+	)();
+</script>
 
 <form action="/ResourceEvents/Index" method="post">
 	<fieldset>
@@ -31,40 +53,51 @@
 <div class="resourceevent-menu">
 	<a asp-controller="People" asp-action="Create">Add Person</a>
 </div>
-<table class="table">
+<table class="table" id="resourceEventTable">
 	<thead>
 		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.EventDate)
+			<th class="col">
+				Date
 			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Resource)
+			<th class="col">
+				Wendy
 			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Person)
+			<th class="col"></th>
+			<th class="col">
+				Jeff
 			</th>
-			<th></th>
+			<th class="col"></th>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach (var item in Model)
 		{
-			<tr>
-				<td>
-					@Html.DisplayFor(modelItem => item.EventDate)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Resource.ResourceTitle)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Person.Name)
-				</td>
-				<td>
-					<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-					<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-				</td>
-			</tr>
+			{
+				var jeff = item.resourceEventModelBookings.Where(z => z.Person.Name == "Jeff Broadhurst" && z.EventDate == item.resourceEventModelDate).ToList();
+				var wendy = item.resourceEventModelBookings.Where(z => z.Person.Name == "Wendy Broadhurst" && z.EventDate == item.resourceEventModelDate).ToList();
+				var jeffColor = string.Empty;
+				var wendyColor = string.Empty;
+				if (jeff.Count() > 0) { jeffColor = jeff[0].Resource.ResourceTitle == "Red Civic" ? "red" : "blue"; }
+				if (wendy.Count() > 0) { wendyColor = wendy[0].Resource.ResourceTitle == "Red Civic" ? "red" : "blue"; }
+
+				var wendyId = wendy.Count() > 0 ? wendy[0].Id : 0;
+				var jeffId = jeff.Count() > 0 ? jeff[0].Id : 0;
+
+		<tr>
+			<td class="col">
+				@item.resourceEventModelDate.ToString("dd-MM-yyyy")
+			</td>
+			<td class="col">
+				<div>@wendyColor</div>
+			</td>
+			<td class="col"><a asp-action="Delete" asp-route-id="@wendyId">Delete</a></td>
+			<td class="col">
+				<div>@jeffColor</div>
+			</td>
+			<td class="col"><a asp-action="Delete" asp-route-id="@wendyId">Delete</a></td>
+
+		</tr>
+			}
 		}
 	</tbody>
 </table>
