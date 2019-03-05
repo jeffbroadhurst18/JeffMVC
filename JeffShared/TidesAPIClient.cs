@@ -29,8 +29,7 @@ namespace JeffShared
 
 		public async Task<StationData> GetStations()
 		{
-			var url = _baseUrl;
-			return JsonConvert.DeserializeObject<StationData>(await _client.GetStringAsync(url));
+			return JsonConvert.DeserializeObject<StationData>(await _client.GetStringAsync(_baseUrl));
 		}
 
 		public Task<TideData[]> GetTideData(string id)
