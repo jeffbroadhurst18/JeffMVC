@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using JeffShared;
@@ -25,11 +26,24 @@ namespace JeffAPI.Controllers
 		[HttpGet("{id}")]
 		public ActionResult<List<Tide>> Tides(string id)
 		{
-			if (id == null) { return BadRequest("No Station entered"); }
-			var tideData = _tidesService.GetTideData(id).Result.ToList();
-			var tides = _mapper.Map<List<Tide>>(tideData);
-			if (tides == null) { return BadRequest("Unknown Station"); }
-			return Ok(tides);
+			try
+			{
+				if (id == null) { return BadRequest("No Station entered"); }
+				Regex regex = new Regex(@"^\d+$");
+				if (!regex.IsMatch(id))
+				{
+					return BadRequest("Station must be numeric only");
+				}
+
+				var tideData = _tidesService.GetTideData(id).Result.ToList();
+				var tides = _mapper.Map<List<Tide>>(tideData);
+				if (tides == null) { return BadRequest("Unknown Station"); }
+				return Ok(tides);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest("Error. Oh No!!")
+			}
 		}
 	}
 }
