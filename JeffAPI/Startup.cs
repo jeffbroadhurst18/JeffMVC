@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using AutoMapper;
 using JeffShared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace JeffAPI
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddSingleton(Configuration);
 			services.AddSingleton<ITidesService, TidesService>();
+			services.AddAutoMapper(); //Adds IMapper as injectable type
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

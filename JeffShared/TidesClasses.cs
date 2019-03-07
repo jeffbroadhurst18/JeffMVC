@@ -25,12 +25,6 @@ namespace JeffShared
 		public Properties properties { get; set; }
 	}
 
-	public class Tide
-	{
-		public string type { get; set; }
-		public List<Feature> features { get; set; }
-	}
-
 	public class TideData
 	{
 		public string EventType { get; set; }
@@ -45,12 +39,5 @@ namespace JeffShared
 	{
 		public string type { get; set; }
 		public List<Feature> features { get; set; }
-	}
-
-	public class IndividualStation
-	{
-		public string type { get; set; }
-		public Geometry geometry { get; set; }
-		public Properties properties { get; set; }
 	}
 }

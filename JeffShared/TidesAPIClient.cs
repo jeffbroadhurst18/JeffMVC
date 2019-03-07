@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,9 +22,9 @@ namespace JeffShared
 			_baseUrl = _configuration.GetSection("Admiralty").GetSection("BaseURL").Value;
 		}
 
-		public async Task<IndividualStation> GetStationAsync(string id)
+		public async Task<Feature> GetStationAsync(string id)
 		{
-			var individualStation = JsonConvert.DeserializeObject<IndividualStation>(await _client.GetStringAsync($"{_baseUrl}/{id}"));
+			var individualStation = JsonConvert.DeserializeObject<Feature>(await _client.GetStringAsync($"{_baseUrl}/{id}"));
 			return individualStation;
 		}
 
@@ -32,9 +33,22 @@ namespace JeffShared
 			return JsonConvert.DeserializeObject<StationData>(await _client.GetStringAsync(_baseUrl));
 		}
 
-		public Task<TideData[]> GetTideData(string id)
+		public async Task<TideData[]> GetTideData(string id)
 		{
-			throw new NotImplementedException();
+			if (id == "0")
+			{
+				List<TideData> tideList = new List<TideData>
+				{
+					new TideData { EventType = "No data" }
+				};
+
+				return tideList.ToArray();
+			}
+
+			var url = $"{_baseUrl}/{id}/TidalEvents";
+			var json = _client.GetStringAsync(url);
+			var allTides = JsonConvert.DeserializeObject<TideData[]>(await json);
+			return allTides.Skip(4).Take(8).ToArray();
 		}
 
 		
@@ -44,6 +58,6 @@ namespace JeffShared
 	{
 		Task<StationData> GetStations();
 		Task<TideData[]> GetTideData(string id);
-		Task<IndividualStation> GetStationAsync(string id);
+		Task<Feature> GetStationAsync(string id);
 	}
 }

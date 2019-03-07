@@ -16,7 +16,7 @@ namespace JeffShared
 			_client = client;
 		}
 
-		public async Task<IndividualStation> GetStation(string id)
+		public async Task<Feature> GetStation(string id)
 		{
 			return await _client.GetStationAsync(id);
 		}
@@ -26,9 +26,9 @@ namespace JeffShared
 			 return await _client.GetStations();
 		}
 
-		public Task<TideData[]> GetTideData(string id)
+		public async Task<TideData[]> GetTideData(string id)
 		{
-			return _client.GetTideData(id);
+			return await _client.GetTideData(id);
 		}
 
 		

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AutoMapper;
 using JeffShared;
+using JeffShared.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JeffAPI.Controllers
@@ -12,24 +15,44 @@ namespace JeffAPI.Controllers
 	public class StationsController : ControllerBase
 	{
 		private ITidesService _tidesService;
-		public StationsController(ITidesService tidesService)
+		private readonly IMapper _mapper;
+		public StationsController(ITidesService tidesService, IMapper mapper)
 		{
 			_tidesService = tidesService;
+			_mapper = mapper;
 		}
 
-
 		// GET api/values
-		[HttpGet(Name ="Stations")]
-		public ActionResult<StationData> Stations()
+		[HttpGet(Name = "Stations")]
+		public ActionResult<List<Station>> Stations()
 		{
-			return _tidesService.GetStations().Result;
+			var stationData = _tidesService.GetStations().Result;
+			var stations = _mapper.Map<List<Station>>(stationData);
+			return Ok(stations);
 		}
 
 		// GET api/values/5
 		[HttpGet("{id}")]
-		public ActionResult<IndividualStation> Station(string id)
+		public ActionResult<Station> Station(string id)
 		{
-			return _tidesService.GetStation(id).Result;
+			try
+			{
+				Regex regex = new Regex(@"^\d+$");
+				if (!regex.IsMatch(id))
+				{
+					return BadRequest("Station must be numeric only");
+				}
+
+				if (id == null) { return BadRequest("No Station"); }
+				var feature = _tidesService.GetStation(id).Result;
+				var station = _mapper.Map<Station>(feature);
+				if (station == null) { return BadRequest("Unknown Station"); }
+				return Ok(station);
+			}
+			catch (Exception ex) {
+				return BadRequest("Whoops");
+			}
+			
 		}
 
 		// POST api/values

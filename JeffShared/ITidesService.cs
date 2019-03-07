@@ -9,6 +9,6 @@ namespace JeffShared
 	{
 		Task<StationData> GetStations();
 		Task<TideData[]> GetTideData(string id);
-		Task<IndividualStation> GetStation(string id);
+		Task<Feature> GetStation(string id);
 	}
 }
