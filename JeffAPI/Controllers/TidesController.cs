@@ -42,7 +42,7 @@ namespace JeffAPI.Controllers
 			}
 			catch (Exception ex)
 			{
-				return BadRequest("Error. Oh No!!")
+				return BadRequest("Error. Oh No!!");
 			}
 		}
 	}
