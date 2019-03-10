@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using JeffShared;
 using JeffShared.ViewModel;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JeffAPI.Controllers
@@ -23,6 +24,7 @@ namespace JeffAPI.Controllers
 		}
 
 		// GET api/values
+		[EnableCors("AnyGET")]
 		[HttpGet(Name = "Stations")]
 		public ActionResult<List<Station>> Stations()
 		{

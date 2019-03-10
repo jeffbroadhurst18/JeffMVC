@@ -38,6 +38,19 @@ namespace JeffAPI
 			services.AddSingleton(Configuration);
 			services.AddSingleton<ITidesService, TidesService>();
 			services.AddAutoMapper(); //Adds IMapper as injectable type
+
+			//============
+			services.AddCors(cfg => {
+
+				cfg.AddPolicy("AnyGET", bldr =>
+				{
+					bldr.AllowAnyHeader().
+					AllowAnyMethod().
+					AllowAnyOrigin();
+				});
+			});
+
+			//====
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
