@@ -34,6 +34,7 @@ namespace JeffAPI.Controllers
 		}
 
 		// GET api/values/5
+		[EnableCors("AnyGET")]
 		[HttpGet("{id}")]
 		public ActionResult<Station> Station(string id)
 		{

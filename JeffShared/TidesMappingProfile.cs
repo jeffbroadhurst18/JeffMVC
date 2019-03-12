@@ -27,8 +27,8 @@ namespace JeffAPI
 				.ForMember(s => s.LocationPoints, opt => opt.MapFrom(x => x.geometry.coordinates));
 
 			CreateMap<TideData, Tide>()
-				.ForMember(s => s.TideTime, opt => opt.MapFrom(x => x.DateTime))
-				.ForMember(s => s.TideType, opt => opt.MapFrom(x => x.EventType));
+				.ForMember(s => s.TideTime, opt => opt.MapFrom(x => x.DateTime.ToString("dd/MM/yyyy hh:mm")))
+				.ForMember(s => s.TideType, opt => opt.MapFrom(x => x.EventType == "HighWater" ? "High Water" : "Low Water"));
 		}
 	}
 }

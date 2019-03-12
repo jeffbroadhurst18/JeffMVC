@@ -7,6 +7,6 @@ namespace JeffShared.ViewModel
 	public class Tide
 	{
 		public string TideType { get; set; }
-		public DateTime TideTime { get; set; }
+		public string TideTime { get; set; }
 	}
 }
