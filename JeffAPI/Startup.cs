@@ -34,13 +34,18 @@ namespace JeffAPI
 				client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", Configuration.GetSection("Ocp-Apim-Subscription-Key").GetSection("key").Value);
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			});
+
+			services.AddHttpClient<ICountriesAPIClient, CountriesAPIClient>(client => { client.DefaultRequestHeaders.Accept.Clear(); });
+
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddSingleton(Configuration);
 			services.AddSingleton<ITidesService, TidesService>();
+			services.AddSingleton<ICountryService, CountryService>();
 			services.AddAutoMapper(); //Adds IMapper as injectable type
 
 			//============
-			services.AddCors(cfg => {
+			services.AddCors(cfg =>
+			{
 
 				cfg.AddPolicy("AnyGET", bldr =>
 				{
