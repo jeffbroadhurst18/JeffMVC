@@ -31,7 +31,7 @@ namespace JeffAPI.Controllers
 			try
 			{
 				if (id == null) { return BadRequest("No Station entered"); }
-				Regex regex = new Regex(@"^\d+$");
+				Regex regex = new Regex(@"^\d+[A-Z]?$");
 				if (!regex.IsMatch(id))
 				{
 					return BadRequest("Station must be numeric only");

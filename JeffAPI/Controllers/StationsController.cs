@@ -29,7 +29,7 @@ namespace JeffAPI.Controllers
 		public ActionResult<List<Station>> Stations()
 		{
 			var stationData = _tidesService.GetStations().Result;
-			var stations = _mapper.Map<List<Station>>(stationData);
+			var stations = _mapper.Map<List<Station>>(stationData).OrderBy(o => o.Name);
 			return Ok(stations);
 		}
 
@@ -40,7 +40,7 @@ namespace JeffAPI.Controllers
 		{
 			try
 			{
-				Regex regex = new Regex(@"^\d+$");
+				Regex regex = new Regex(@"^\d+[A-Z]?$");
 				if (!regex.IsMatch(id))
 				{
 					return BadRequest("Station must be numeric only");

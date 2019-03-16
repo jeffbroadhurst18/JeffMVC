@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using JeffShared;
 using JeffShared.ViewModel;
+using Microsoft.AspNetCore.Cors;
 
 namespace JeffAPI.Controllers
 {
@@ -25,6 +26,7 @@ namespace JeffAPI.Controllers
 		}
 
 		[HttpGet("{name}")]
+		[EnableCors("AnyGET")]
 		public async Task<IActionResult> Get(string name)
 		{
 			try
@@ -33,7 +35,7 @@ namespace JeffAPI.Controllers
 
 				if (countries == null) return NotFound($"Country {name} was not found");
 
-				var mapped = _mapper.Map<IEnumerable<Country>>(countries);
+				var mapped = _mapper.Map<IEnumerable<Country>>(countries).OrderBy(y => y.Name);
 				return Ok(mapped);
 			}
 			catch (Exception ex)
@@ -44,6 +46,7 @@ namespace JeffAPI.Controllers
 
 		[HttpGet("")]
 		[Route("capital/{name}")]
+		[EnableCors("AnyGET")]
 		public async Task<IActionResult> GetCapital(string name)
 		{
 			try

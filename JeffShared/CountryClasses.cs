@@ -49,7 +49,7 @@ namespace JeffShared
 		public List<string> altSpellings { get; set; }
 		public string region { get; set; }
 		public string subregion { get; set; }
-		public int population { get; set; }
+		public double population { get; set; }
 		public List<double> latlng { get; set; }
 		public string demonym { get; set; }
 		public object area { get; set; }
@@ -85,11 +85,11 @@ namespace JeffShared
 		public List<string> altSpellings { get; set; }
 		public string region { get; set; }
 		public string subregion { get; set; }
-		public int population { get; set; }
+		public double population { get; set; }
 		public List<double> latlng { get; set; }
 		public string demonym { get; set; }
-		public int area { get; set; }
-		public int gini { get; set; }
+		public double area { get; set; }
+		public double gini { get; set; }
 		public List<string> timezones { get; set; }
 		public List<string> borders { get; set; }
 		public string nativeName { get; set; }
