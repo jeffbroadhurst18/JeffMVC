@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace JeffShared
 {
@@ -53,7 +51,7 @@ namespace JeffShared
 		public List<double> latlng { get; set; }
 		public string demonym { get; set; }
 		public object area { get; set; }
-		public object gini { get; set; }
+		public double? gini { get; set; }
 		public List<string> timezones { get; set; }
 		public List<object> borders { get; set; }
 		public string nativeName { get; set; }
@@ -89,7 +87,7 @@ namespace JeffShared
 		public List<double> latlng { get; set; }
 		public string demonym { get; set; }
 		public double area { get; set; }
-		public double gini { get; set; }
+		public double? gini { get; set; }
 		public List<string> timezones { get; set; }
 		public List<string> borders { get; set; }
 		public string nativeName { get; set; }
