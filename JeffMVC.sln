@@ -8,6 +8,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestHttp", "TestHttp\TestHttp.csproj", "{EB4D2723-20DD-4DAF-A75B-62A20B494F78}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JeffAPI", "JeffAPI\JeffAPI.csproj", "{47A88672-0382-4E14-9478-56ADEED9DEA6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{84FCD2C6-4EC5-46C7-BAC2-A4EDB0513511} = {84FCD2C6-4EC5-46C7-BAC2-A4EDB0513511}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JeffShared", "JeffShared\JeffShared.csproj", "{8101D267-AFDC-420F-A9B5-8B0C233E8683}"
 EndProject

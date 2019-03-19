@@ -17,12 +17,6 @@ namespace JeffShared
 				.ForMember(p => p.Name, opt => opt.MapFrom(s => s.name))
 				.ForMember(p => p.Capital, opt => opt.MapFrom(s => s.capital))
 				.ForMember(p => p.Code, opt => opt.MapFrom(s => s.alpha3Code));
-				//.ConvertUsing(source => source. .CountryList.Select(p => new Country
-				//	{
-				//		Name = p.name,
-				//		Capital = p.capital,
-				//		Code = p.alpha3Code
-				//	}).ToList());
 
 			CreateMap<CapitalRaw, Capital>()
 				.ForMember(p => p.Name, opt => opt.MapFrom(s => s.capital))
