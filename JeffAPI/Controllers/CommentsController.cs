@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using JeffShared;
 using JeffShared.ViewModel;
+using Microsoft.AspNetCore.Cors;
 
 namespace JeffAPI.Controllers
 {
@@ -23,9 +24,10 @@ namespace JeffAPI.Controllers
 
         // GET: api/Comments
         [HttpGet]
-        public IEnumerable<Comment> GetComments()
+		[EnableCors("AnyGET")]
+		public IEnumerable<Comment> GetComments()
         {
-            return _context.Comments;
+            return _context.Comments.OrderByDescending(d => d.DateRecorded);
         }
 
         // GET: api/Comments/5
@@ -84,7 +86,8 @@ namespace JeffAPI.Controllers
 
         // POST: api/Comments
         [HttpPost]
-        public async Task<IActionResult> PostComment([FromBody] Comment comment)
+		[EnableCors("AnyGET")]
+		public async Task<IActionResult> PostComment([FromBody] Comment comment)
         {
             if (!ModelState.IsValid)
             {
