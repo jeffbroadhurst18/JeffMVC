@@ -102,7 +102,8 @@ namespace JeffAPI.Controllers
 
         // DELETE: api/Comments/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteComment([FromRoute] int id)
+		[EnableCors("AnyGET")]
+		public async Task<IActionResult> DeleteComment([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
