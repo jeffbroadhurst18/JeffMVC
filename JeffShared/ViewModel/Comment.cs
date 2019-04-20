@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace JeffShared.ViewModel
 {
@@ -10,5 +8,13 @@ namespace JeffShared.ViewModel
 		public string Description { get; set; }
 		public DateTime DateRecorded { get; set; }
 		public bool Important { get; set; }
+		public Category Category { get; set; }
+	}
+
+	public enum Category
+	{
+		Work = 0,
+		Home = 1,
+		Education = 2
 	}
 }

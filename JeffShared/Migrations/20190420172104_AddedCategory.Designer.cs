@@ -4,14 +4,16 @@ using JeffShared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JeffShared.Migrations
 {
     [DbContext(typeof(LocationContext))]
-    partial class LocationContextModelSnapshot : ModelSnapshot
+    [Migration("20190420172104_AddedCategory")]
+    partial class AddedCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
