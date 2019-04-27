@@ -4,14 +4,16 @@ using JeffShared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JeffShared.Migrations
 {
     [DbContext(typeof(LocationContext))]
-    partial class LocationContextModelSnapshot : ModelSnapshot
+    [Migration("20190427120226_AddedAlbumClassFinal")]
+    partial class AddedAlbumClassFinal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,8 +28,6 @@ namespace JeffShared.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Band");
-
-                    b.Property<string>("FileName");
 
                     b.Property<string>("Name");
 
@@ -65,42 +65,22 @@ namespace JeffShared.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Member");
-                });
-
-            modelBuilder.Entity("JeffShared.ViewModel.MemberAlbum", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<int>("AlbumId");
 
-                    b.Property<int>("MemberId");
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AlbumId");
 
-                    b.HasIndex("MemberId");
-
-                    b.ToTable("MemberAlbum");
+                    b.ToTable("Member");
                 });
 
-            modelBuilder.Entity("JeffShared.ViewModel.MemberAlbum", b =>
+            modelBuilder.Entity("JeffShared.ViewModel.Member", b =>
                 {
                     b.HasOne("JeffShared.ViewModel.Album", "Album")
                         .WithMany()
                         .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("JeffShared.ViewModel.Member", "Member")
-                        .WithMany()
-                        .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
