@@ -28,4 +28,15 @@ namespace JeffShared.ViewModel
 		public int MemberId { get; set; }
 		public Member Member { get; set; }
 	}
+
+	public class DisplayAlbum
+	{
+		public int Id { get; set; }
+		public string Band { get; set; }
+		public string Name { get; set; }
+		public int Year { get; set; }
+		public string Review { get; set; }
+		public string FileName { get; set; }
+		public IEnumerable<Member> Members { get; set; }
+	}
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using JeffShared;
 using JeffShared.ViewModel;
+using Microsoft.AspNetCore.Cors;
 
 namespace JeffAPI.Controllers
 {
@@ -23,7 +24,8 @@ namespace JeffAPI.Controllers
 
         // GET: api/MemberAlbums
         [HttpGet]
-        public IEnumerable<MemberAlbum> GetMemberAlbums()
+		[EnableCors("AnyGET")]
+		public IEnumerable<MemberAlbum> GetMemberAlbums()
         {
 			return _context.MemberAlbums.Include(a => a.Album).Include(b => b.Member);
         }
