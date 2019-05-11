@@ -17,8 +17,11 @@ namespace TestHttp
 
 
 			//var answer = await ProcessRepositories();
-			var data = await GetSeaData("0324");
-			var tides = await GetTideData("0462");
+			//var data = await GetSeaData("0324");
+			//var tides = await GetTideData("0462");
+			var x = await GetWeatherForecast();
+			Console.WriteLine(JsonConvert.SerializeObject(x));
+			Console.ReadLine();
 		}
 
 		private static async Task<RootObject> GetSeaData(string loc)
@@ -35,7 +38,35 @@ namespace TestHttp
 			return x;
 		}
 
+		//private static async Task<WeatherRoot> GetWeather()
+		//{
+		//	client.DefaultRequestHeaders.Accept.Clear();
+		//	//client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+		//	client.DefaultRequestHeaders.Add("X-RapidAPI-Host", "community-open-weather-map.p.rapidapi.com");
+		//	client.DefaultRequestHeaders.Add("X-RapidAPI-Key", "G7ZSpJuH8GmshvKucWNG8JS371tep1HfaAyjsntKv9zuCNVpfr");
+		//	client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+		//	var json = client.GetStringAsync($"https://community-open-weather-map.p.rapidapi.com/weather?id=2172797&units=%22metric%22+or+%22imperial%22&mode=xml%2C+html&q=London%2Cuk");
+		//	//var y = await json;
+		//	return JsonConvert.DeserializeObject<WeatherRoot>(await json);
+		//	//var x = JsonConvert.DeserializeObject<RootObject>(y);
+		//}
+
+		private static async Task<ForecastRootObject> GetWeatherForecast()
+		{
+			client.DefaultRequestHeaders.Accept.Clear();
+			//client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+			client.DefaultRequestHeaders.Add("X-RapidAPI-Host", "community-open-weather-map.p.rapidapi.com");
+			client.DefaultRequestHeaders.Add("X-RapidAPI-Key", "G7ZSpJuH8GmshvKucWNG8JS371tep1HfaAyjsntKv9zuCNVpfr");
+			client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+			var json = client.GetStringAsync($"https://community-open-weather-map.p.rapidapi.com/forecast?q=london%2Cuk");
+			//var y = await json;
+			return JsonConvert.DeserializeObject<ForecastRootObject>(await json);
+			//var x = JsonConvert.DeserializeObject<RootObject>(y);
+		}
 		
+
 
 			private static async Task<TideData[]> GetTideData(string loc)
 		{
@@ -142,6 +173,143 @@ namespace TestHttp
 			public bool IsApproximateHeight { get; set; }
 			public bool Filtered { get; set; }
 		}
+
+		//public class Coord
+		//{
+		//	public double lon { get; set; }
+		//	public double lat { get; set; }
+		//}
+
+		//public class Weather
+		//{
+		//	public int id { get; set; }
+		//	public string main { get; set; }
+		//	public string description { get; set; }
+		//	public string icon { get; set; }
+		//}
+
+		//public class MainWeather
+		//{
+		//	public double temp { get; set; }
+		//	public int pressure { get; set; }
+		//	public int humidity { get; set; }
+		//	public double temp_min { get; set; }
+		//	public double temp_max { get; set; }
+		//}
+
+		//public class Wind
+		//{
+		//	public double speed { get; set; }
+		//	public int deg { get; set; }
+		//}
+
+		//public class Clouds
+		//{
+		//	public int all { get; set; }
+		//}
+
+		//public class Sys
+		//{
+		//	public int type { get; set; }
+		//	public int id { get; set; }
+		//	public double message { get; set; }
+		//	public string country { get; set; }
+		//	public int sunrise { get; set; }
+		//	public int sunset { get; set; }
+		//}
+
+		//public class WeatherRoot
+		//{
+		//	public Coord coord { get; set; }
+		//	public List<Weather> weather { get; set; }
+		//	public string @base { get; set; }
+		//	public MainWeather main { get; set; }
+		//	public int visibility { get; set; }
+		//	public Wind wind { get; set; }
+		//	public Clouds clouds { get; set; }
+		//	public int dt { get; set; }
+		//	public Sys sys { get; set; }
+		//	public int id { get; set; }
+		//	public string name { get; set; }
+		//	public int cod { get; set; }
+		//}
+
+		public class ForecastMain
+		{
+			public double temp { get; set; }
+			public double temp_min { get; set; }
+			public double temp_max { get; set; }
+			public double pressure { get; set; }
+			public double sea_level { get; set; }
+			public double grnd_level { get; set; }
+			public int humidity { get; set; }
+			public double temp_kf { get; set; }
+		}
+
+		public class Weather
+		{
+			public int id { get; set; }
+			public string main { get; set; }
+			public string description { get; set; }
+			public string icon { get; set; }
+		}
+
+		public class Clouds
+		{
+			public int all { get; set; }
+		}
+
+		public class Wind
+		{
+			public double speed { get; set; }
+			public double deg { get; set; }
+		}
+
+		public class Rain
+		{
+			public double __invalid_name__3h { get; set; }
+		}
+
+		public class Sys
+		{
+			public string pod { get; set; }
+		}
+
+		public class List
+		{
+			public int dt { get; set; }
+			public ForecastMain main { get; set; }
+			public List<Weather> weather { get; set; }
+			public Clouds clouds { get; set; }
+			public Wind wind { get; set; }
+			public Rain rain { get; set; }
+			public Sys sys { get; set; }
+			public string dt_txt { get; set; }
+		} 
+
+		public class Coord
+		{
+			public double lat { get; set; }
+			public double lon { get; set; }
+		}
+
+		public class City
+		{
+			public int id { get; set; }
+			public string name { get; set; }
+			public Coord coord { get; set; }
+			public string country { get; set; }
+			public int population { get; set; }
+		}
+
+		public class ForecastRootObject
+		{
+			public string cod { get; set; }
+			public double message { get; set; }
+			public int cnt { get; set; }
+			public List<List> list { get; set; }
+			public City city { get; set; }
+		} 
 	}
 
 

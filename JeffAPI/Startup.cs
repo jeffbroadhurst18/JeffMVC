@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Headers;
 using AutoMapper;
 using JeffShared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace JeffAPI
 {
@@ -36,12 +29,21 @@ namespace JeffAPI
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			});
 
+			services.AddHttpClient<IWeatherApiClient, WeatherApiClient>(client =>
+			{
+				client.DefaultRequestHeaders.Accept.Clear();
+				client.DefaultRequestHeaders.Add("X-RapidAPI-Host", Configuration.GetSection("X-RapidAPI-Host").GetSection("host").Value);
+				client.DefaultRequestHeaders.Add("X-RapidAPI-Key", Configuration.GetSection("X-RapidAPI-Key").GetSection("key").Value);
+				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+			});
+
 			services.AddHttpClient<ICountriesAPIClient, CountriesAPIClient>(client => { client.DefaultRequestHeaders.Accept.Clear(); });
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddSingleton(Configuration);
 			services.AddSingleton<ITidesService, TidesService>();
 			services.AddSingleton<ICountryService, CountryService>();
+			services.AddSingleton<IWeatherService, WeatherService>();
 			services.AddAutoMapper(); //Adds IMapper as injectable type
 
 			//============
