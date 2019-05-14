@@ -34,9 +34,11 @@ namespace JeffAPI.Controllers
 		[EnableCors("AnyGET")]
         public async Task<ActionResult<JeffShared.ViewModel.Weather>> Get(string id)
         {
-			id += ",uk";
-			var weatherData = await _weatherService.GetForecast(id);
+			//id += ",uk";
+			var p = id.Split(',');
+			var weatherData = await _weatherService.GetForecast($"{ p[0]},{p[1]}");
 			var weather = _mapper.Map<JeffShared.ViewModel.Weather>(weatherData);
+			weather.Query = id;
 			return weather;
 		}
 

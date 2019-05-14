@@ -11,6 +11,7 @@ namespace JeffShared
 		public WeatherMappingProfile()
 		{
 			CreateMap<WeatherRootObject, ViewModel.Weather>()
+				.ForMember(w => w.Name, opt => opt.MapFrom(x => x.name)) 
 				.ForMember(w => w.MainWeather, opt => opt.MapFrom(x => x.weather[0].main))
 				.ForMember(w => w.Description, opt => opt.MapFrom(x => x.weather[0].description))
 				.ForMember(w => w.Sunrise, opt => opt.MapFrom(x => UnixTimeStampToDateTime(x.sys.sunrise)))
@@ -26,6 +27,7 @@ namespace JeffShared
 			var textArray = new string[] { "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N" };
 			var fig = deg % 360;
 			var index = Math.Round(fig / 22.5, 0) + 1;
+			if (index > 16) { index = 16; }
 			return textArray[(int)index];
 		}
 

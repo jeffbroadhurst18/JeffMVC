@@ -6,6 +6,7 @@ namespace JeffShared.ViewModel
 {
 	public class Weather
 	{
+		public string Name { get; set; }
 		public string MainWeather { get; set; }
 		public string Description { get; set; }
 		public double Temperature { get; set; }
@@ -14,5 +15,6 @@ namespace JeffShared.ViewModel
 		public string Icon { get; set; }
 		public DateTime Sunrise { get; set; }
 		public DateTime Sunset { get; set; }
+		public string Query { get; set; }
 	}
 }
