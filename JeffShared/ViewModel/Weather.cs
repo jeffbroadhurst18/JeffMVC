@@ -15,6 +15,7 @@ namespace JeffShared.ViewModel
 		public string Icon { get; set; }
 		public DateTime Sunrise { get; set; }
 		public DateTime Sunset { get; set; }
+		public DateTime CurrentTime { get; set; }
 		public string Query { get; set; }
 	}
 }

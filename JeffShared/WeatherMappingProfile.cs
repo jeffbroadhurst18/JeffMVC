@@ -16,6 +16,7 @@ namespace JeffShared
 				.ForMember(w => w.Description, opt => opt.MapFrom(x => x.weather[0].description))
 				.ForMember(w => w.Sunrise, opt => opt.MapFrom(x => UnixTimeStampToDateTime(x.sys.sunrise)))
 				.ForMember(w => w.Sunset, opt => opt.MapFrom(x => UnixTimeStampToDateTime(x.sys.sunset)))
+				.ForMember(w => w.CurrentTime, opt => opt.MapFrom(x => DateTime.Now))
 				.ForMember(w => w.Icon, opt => opt.MapFrom(x => x.weather[0].icon))
 				.ForMember(w => w.Temperature, opt => opt.MapFrom(x => Math.Round(x.main.temp - 273.15,1)))
 				.ForMember(w => w.Wind, opt => opt.MapFrom(x => Math.Round(x.wind.speed * 3600/1609,1)))
