@@ -1,12 +1,17 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.Net.Http.Headers;
+using System.Text;
 using AutoMapper;
 using JeffShared;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace JeffAPI
 {
@@ -45,6 +50,23 @@ namespace JeffAPI
 			services.AddSingleton<ICountryService, CountryService>();
 			services.AddSingleton<IWeatherService, WeatherService>();
 			services.AddAutoMapper(); //Adds IMapper as injectable type
+			services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<LocationContext>();
+			services.AddTransient<CreateUser>();
+
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+				.AddJwtBearer(options =>
+				{
+					options.TokenValidationParameters = new TokenValidationParameters
+					{
+						ValidateIssuer = true,
+						ValidateAudience = true,
+						ValidateLifetime = true,
+						ValidateIssuerSigningKey = true,
+						ValidIssuer = Configuration.GetSection("Tokens").GetSection("Issuer").Value,
+						ValidAudience = Configuration.GetSection("Tokens").GetSection("Audience").Value,
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("Tokens").GetSection("Key").Value))
+					};
+				});
 
 			//============
 			services.AddCors(cfg =>
@@ -60,8 +82,13 @@ namespace JeffAPI
 
 			//====
 			services.AddDbContext<LocationContext>(options =>
-					options.UseSqlServer(Configuration.GetConnectionString("LocationContext")));
+					options.UseSqlServer(Configuration.GetConnectionString("LocationContext"), b => b.MigrationsAssembly("JeffShared")));
+
+
+
 		}
+
+
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -76,7 +103,17 @@ namespace JeffAPI
 			}
 
 			app.UseHttpsRedirection();
+			app.UseAuthentication();
 			app.UseMvc();
+
+			//using (var scope = app.ApplicationServices.CreateScope())
+			//{
+			//	var seeder = scope.ServiceProvider.GetService<CreateUser>();
+			//	seeder.CreateFirstUser().Wait(); ; //seeder is async .Wait waits for it to finish without making 
+			//							// the whole method async.
+			//}
 		}
+
+
 	}
 }

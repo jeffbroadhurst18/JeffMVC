@@ -7,6 +7,7 @@
   <ItemGroup>
     <Compile Remove="Migrations\20190427115848_AddedAlbumClass3.cs" />
     <Compile Remove="Migrations\20190427115933_AddedAlbumClass4.cs" />
+    <Compile Remove="Migrations\20190625184240_AddingIdentity.cs" />
   </ItemGroup>
 
   <ItemGroup>
