@@ -6,11 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using JeffShared;
 using JeffShared.ViewModel;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JeffAPI.Controllers
 {
 	[Route("api/[controller]")]
-    [ApiController]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+	[ApiController]
     public class CommentsController : ControllerBase
     {
         private readonly LocationContext _context;

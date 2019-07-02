@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace JeffAPI.Controllers
 {
@@ -41,13 +42,15 @@ namespace JeffAPI.Controllers
 		}
 
 		[AllowAnonymous]
+		[EnableCors("AnyGET")]
+		[Route("login")]
 		[HttpPost]
 		public async Task<IActionResult> Login([FromBody]Login login)
 		{
 			IActionResult response = Unauthorized();
 			var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, login.RememberMe, false);
 
-			if (!result.Succeeded) { return BadRequest(); }
+			if (!result.Succeeded) { return BadRequest(new { message = "Failed to Login" }); }
 
 			if (login != null)
 			{
@@ -72,8 +75,7 @@ namespace JeffAPI.Controllers
 			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 
-		
-
+		[EnableCors("AnyGET")]
 		[HttpGet]
 		public async Task<IActionResult> Logout()
 		{
