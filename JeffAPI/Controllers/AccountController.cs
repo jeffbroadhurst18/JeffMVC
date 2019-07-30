@@ -61,6 +61,33 @@ namespace JeffAPI.Controllers
 			return response;
 		}
 
+		[AllowAnonymous]
+		[HttpGet]
+		[Route("register")]
+		[HttpPost]
+		public async Task<IActionResult> Register([FromBody]RegisterViewModel model)
+		{
+			
+				// Copy data from RegisterViewModel to IdentityUser
+				var user = new IdentityUser
+				{
+					UserName = model.Email,
+					Email = model.Email
+				};
+
+				try
+				{
+					var result = await _userManager.CreateAsync(user, model.Password);
+					await _signInManager.SignInAsync(user, isPersistent: false);
+					return Ok(model);
+				}
+				catch (Exception ex)
+				{
+					// return error message if there was an exception
+					return BadRequest(new { message = ex.Message });
+				}
+		}
+
 		private string GenerateJSONWebToken(Login userInfo)
 		{
 			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
