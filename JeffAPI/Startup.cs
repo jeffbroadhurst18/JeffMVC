@@ -84,7 +84,15 @@ namespace JeffAPI
 			services.AddDbContext<LocationContext>(options =>
 					options.UseSqlServer(Configuration.GetConnectionString("LocationContext"), b => b.MigrationsAssembly("JeffShared")));
 
-
+			services.Configure<IdentityOptions>(options =>
+			{
+				// Password settings
+				options.Password.RequireDigit = true;
+				options.Password.RequiredLength = 6;
+				options.Password.RequireNonAlphanumeric = false;
+				options.Password.RequireUppercase = true;
+				options.Password.RequireLowercase = false;
+			});
 
 		}
 

@@ -16,8 +16,8 @@ using Microsoft.AspNetCore.Cors;
 namespace JeffAPI.Controllers
 {
 	[Route("api/[controller]")]
-    [ApiController]
-    public class AccountController : Controller
+	[ApiController]
+	public class AccountController : Controller
 	{
 		private readonly SignInManager<IdentityUser> _signInManager;
 		private readonly UserManager<IdentityUser> _userManager;
@@ -25,7 +25,7 @@ namespace JeffAPI.Controllers
 		private readonly IMapper _mapper;
 
 		public AccountController(IMapper mapper, SignInManager<IdentityUser> signInManager,
-			UserManager<IdentityUser> userManager,IConfiguration config)
+			UserManager<IdentityUser> userManager, IConfiguration config)
 		{
 			_signInManager = signInManager;
 			_userManager = userManager;
@@ -62,30 +62,52 @@ namespace JeffAPI.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpGet]
+		[EnableCors("AnyGET")]
 		[Route("register")]
 		[HttpPost]
 		public async Task<IActionResult> Register([FromBody]RegisterViewModel model)
 		{
-			
-				// Copy data from RegisterViewModel to IdentityUser
-				var user = new IdentityUser
-				{
-					UserName = model.Email,
-					Email = model.Email
-				};
 
-				try
+			// Copy data from RegisterViewModel to IdentityUser
+			var user = new IdentityUser
+			{
+				UserName = model.Email,
+				Email = model.Email
+			};
+
+			try
+			{
+				var result = await _userManager.CreateAsync(user, model.Password);
+				if (!result.Succeeded)
 				{
-					var result = await _userManager.CreateAsync(user, model.Password);
-					await _signInManager.SignInAsync(user, isPersistent: false);
-					return Ok(model);
+					var errorString = string.Empty;
+					foreach (var error in result.Errors)
+					{
+						errorString += error.Description + Environment.NewLine;
+					}
+					return BadRequest(new { message = errorString });
 				}
-				catch (Exception ex)
+
+				await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
+				if (user != null)
 				{
-					// return error message if there was an exception
-					return BadRequest(new { message = ex.Message });
+					var login = new Login
+					{
+						Username = model.Email,
+						Password = model.Password,
+						RememberMe = false
+					};
+
+					var tokenString = GenerateJSONWebToken(login);
+					return Ok(new { token = tokenString });
 				}
+				return BadRequest(new { message = "Failed to login" });
+			}
+			catch (Exception ex)
+			{
+				// return error message if there was an exception
+				return BadRequest(new { message = ex.Message });
+			}
 		}
 
 		private string GenerateJSONWebToken(Login userInfo)
@@ -110,7 +132,7 @@ namespace JeffAPI.Controllers
 			return RedirectToAction("Index", "App");
 		}
 
-		
+
 
 	}
 }
