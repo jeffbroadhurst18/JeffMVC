@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using JeffShared;
+using JeffShared.ViewModel;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,28 +23,18 @@ namespace JeffAPI.Controllers
 			_mapper = mapper;
 		}
 
-		// GET: api/Weather
-		[HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
 		// GET: api/Weather/5
-		[HttpGet("{id}")]
 		[EnableCors("AnyGET")]
-        public async Task<ActionResult<JeffShared.ViewModel.Weather>> Get(string id)
-        {
-			//id += ",uk";
-			var p = id.Split(',');
-			var weatherData = await _weatherService.GetForecast($"{ p[0]},{p[1]}");
+		public async Task<ActionResult<JeffShared.ViewModel.Weather>> Get([FromQuery] WeatherParameters weatherParameters)
+		{
+			var weatherData = await _weatherService.GetForecast($"{ weatherParameters.Name},{weatherParameters.Country}");
 			var weather = _mapper.Map<JeffShared.ViewModel.Weather>(weatherData);
-			weather.Query = id;
+			weather.Query = weatherParameters;
 			return weather;
 		}
 
-        // POST: api/Weather
-        [HttpPost]
+		// POST: api/Weather
+		[HttpPost]
         public void Post([FromBody] string value)
         {
         }

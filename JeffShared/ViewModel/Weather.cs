@@ -16,6 +16,13 @@ namespace JeffShared.ViewModel
 		public DateTime Sunrise { get; set; }
 		public DateTime Sunset { get; set; }
 		public DateTime CurrentTime { get; set; }
-		public string Query { get; set; }
+		public WeatherParameters Query { get; set; }
+	}
+
+	public class WeatherParameters
+	{
+		public string Name { get; set; }
+		public string Country { get; set; }
+		public int TimeLag { get; set; }
 	}
 }
