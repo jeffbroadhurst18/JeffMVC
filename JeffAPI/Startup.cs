@@ -6,6 +6,7 @@ using JeffShared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -94,6 +95,8 @@ namespace JeffAPI
 				options.Password.RequireLowercase = false;
 			});
 
+
+			services.AddResponseCaching();
 		}
 
 
@@ -110,9 +113,26 @@ namespace JeffAPI
 				app.UseHsts();
 			}
 
+			app.UseResponseCaching();
+
+			app.Use(async (context, next) =>
+			{
+				context.Response.GetTypedHeaders().CacheControl =
+					new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+					{
+						Public = true,
+						MaxAge = TimeSpan.FromSeconds(60)
+					};
+
+				await next();
+			});
+
 			app.UseHttpsRedirection();
 			app.UseAuthentication();
 			app.UseMvc();
+			
+
+			
 
 			//using (var scope = app.ApplicationServices.CreateScope())
 			//{
