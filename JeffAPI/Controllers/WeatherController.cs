@@ -71,11 +71,12 @@ namespace JeffAPI.Controllers
 			cities.Add(new WeatherParameters { Name = "London", Country = "uk", TimeLag = 0 });
 			cities.Add(new WeatherParameters { Name = "Bournemouth", Country = "uk", TimeLag = 0 });
 			cities.Add(new WeatherParameters { Name = "Edinburgh", Country = "uk", TimeLag = 0 });
+			cities.Add(new WeatherParameters { Name = "Birmingham", Country = "uk", TimeLag = 0 });
 
 			cities.Add(new WeatherParameters { Name = "Stockholm", Country = "se", TimeLag = 1 });
 			cities.Add(new WeatherParameters { Name = "Copenhagen", Country = "dk", TimeLag = 1 });
 			cities.Add(new WeatherParameters { Name = "Roma", Country = "it", TimeLag = 1 });
-			cities.Add(new WeatherParameters { Name = "New", Country = "us", TimeLag = -5 });
+			cities.Add(new WeatherParameters { Name = "New York", Country = "us", TimeLag = -5 });
 			cities.Add(new WeatherParameters { Name = "Paris", Country = "fr", TimeLag = 1 });
 			cities.Add(new WeatherParameters { Name = "Perth", Country = "au", TimeLag = 7 });
 
