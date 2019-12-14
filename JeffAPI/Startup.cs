@@ -121,7 +121,7 @@ namespace JeffAPI
 					new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
 					{
 						Public = true,
-						MaxAge = TimeSpan.FromSeconds(60)
+						MaxAge = TimeSpan.FromSeconds(1)
 					};
 
 				await next();
