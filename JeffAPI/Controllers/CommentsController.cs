@@ -26,9 +26,9 @@ namespace JeffAPI.Controllers
         // GET: api/Comments
         [HttpGet]
 		[EnableCors("AnyGET")]
-		public IEnumerable<Comment> GetComments()
+		public IActionResult GetComments()
         {
-            return _context.Comments.OrderByDescending(d => d.DateRecorded);
+			return Ok(_context.Comments.OrderByDescending(d => d.DateRecorded));
         }
 
         // GET: api/Comments/5

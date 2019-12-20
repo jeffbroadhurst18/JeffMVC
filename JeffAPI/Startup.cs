@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -51,6 +52,7 @@ namespace JeffAPI
 			services.AddSingleton<ICountryService, CountryService>();
 			services.AddSingleton<IWeatherService, WeatherService>();
 			services.AddAutoMapper(); //Adds IMapper as injectable type
+			services.AddMemoryCache();
 			services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<LocationContext>();
 			services.AddTransient<CreateUser>();
 
@@ -113,19 +115,19 @@ namespace JeffAPI
 				app.UseHsts();
 			}
 
-			app.UseResponseCaching();
+			//app.UseResponseCaching();
 
-			app.Use(async (context, next) =>
-			{
-				context.Response.GetTypedHeaders().CacheControl =
-					new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
-					{
-						Public = true,
-						MaxAge = TimeSpan.FromSeconds(1)
-					};
+			//app.Use(async (context, next) =>
+			//{
+			//	context.Response.GetTypedHeaders().CacheControl =
+			//		new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+			//		{
+			//			Public = true,
+			//			MaxAge = TimeSpan.FromSeconds(1)
+			//		};
 
-				await next();
-			});
+			//	await next();
+			//});
 
 			app.UseHttpsRedirection();
 			app.UseAuthentication();
@@ -142,6 +144,7 @@ namespace JeffAPI
 			//}
 		}
 
-
+		
+		
 	}
 }

@@ -8,6 +8,7 @@ using JeffShared.ViewModel;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace JeffAPI.Controllers
 {
@@ -17,24 +18,39 @@ namespace JeffAPI.Controllers
     {
 		private IWeatherService _weatherService;
 		private readonly IMapper _mapper;
+		private readonly IMemoryCache _cache;
 		private List<WeatherParameters> _cities;
+		MemoryCacheEntryOptions _cacheExpirationOptions;
 
-		public WeatherController(IWeatherService weatherService, IMapper mapper)
+		public WeatherController(IWeatherService weatherService, IMapper mapper, IMemoryCache cache)
 		{
 			_weatherService = weatherService;
 			_mapper = mapper;
+			_cache = cache;
 			_cities = GetCities();
+			_cacheExpirationOptions = new MemoryCacheEntryOptions
+			{
+				AbsoluteExpiration = DateTime.Now.AddMinutes(30)
+			};
+
 		}
 
 		// GET: api/Weather/5
 		[EnableCors("AnyGET")]
 		public async Task<ActionResult<JeffShared.ViewModel.Weather>> Get([FromQuery] WeatherParameters data)
 		{
+			var cacheKey = $"FORECAST_{data.Name}";
 			var weatherParameters = _cities.FirstOrDefault(c => c.Name.ToLower() == data.Name.ToLower());
 
-			var weatherData = await _weatherService.GetForecast($"{ weatherParameters.Name},{weatherParameters.Country}");
-			var weather = _mapper.Map<JeffShared.ViewModel.Weather>(weatherData);
-			weather.Query = weatherParameters;
+			if (!_cache.TryGetValue(cacheKey, out JeffShared.ViewModel.Weather weather))
+			{
+				var weatherData = await _weatherService.GetForecast($"{ weatherParameters.Name},{weatherParameters.Country}");
+				weather = _mapper.Map<JeffShared.ViewModel.Weather>(weatherData);
+				weather.Query = weatherParameters;
+				// Save data in cache.
+				_cache.Set(cacheKey, weather, _cacheExpirationOptions);
+			}
+					   
 			return weather;
 		}
 
@@ -42,6 +58,8 @@ namespace JeffAPI.Controllers
 		[Route("cities")]
 		public ActionResult<List<WeatherParameters>> Cities(bool uk)
 		{
+
+
 			return uk ? _cities.Where(c => c.Country == "uk").ToList() : _cities.Where(c => c.Country != "uk").ToList();
 		}
 
