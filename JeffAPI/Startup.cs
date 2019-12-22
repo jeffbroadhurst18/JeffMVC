@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using AutoMapper;
 using JeffShared;
+using JeffShared.WeatherModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -85,6 +86,8 @@ namespace JeffAPI
 
 			//====
 			services.AddDbContext<LocationContext>(options =>
+					options.UseSqlServer(Configuration.GetConnectionString("LocationContext"), b => b.MigrationsAssembly("JeffShared")));
+			services.AddDbContext<WeatherDBContext>(options =>
 					options.UseSqlServer(Configuration.GetConnectionString("LocationContext"), b => b.MigrationsAssembly("JeffShared")));
 
 			services.Configure<IdentityOptions>(options =>
