@@ -1,19 +1,23 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace JeffShared.WeatherModels
 {
-    public partial class WeatherDBContext : DbContext
-    {
-        public WeatherDBContext()
+    public partial class WeatherDBContext : DbContext, IWeatherDBContext
+	{
+		private readonly IConfiguration _configuration;
+
+		public WeatherDBContext()
         {
         }
 
-        public WeatherDBContext(DbContextOptions<WeatherDBContext> options)
+        public WeatherDBContext(DbContextOptions<WeatherDBContext> options, IConfiguration configuration)
             : base(options)
         {
-        }
+			_configuration = configuration;
+		}
 
         public virtual DbSet<Cities> Cities { get; set; }
         public virtual DbSet<Readings> Readings { get; set; }
@@ -22,8 +26,7 @@ namespace JeffShared.WeatherModels
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=BROADHURST_WIN8\\BROADHURST;Database=WeatherDB;Trusted_Connection=True;");
+			   optionsBuilder.UseSqlServer(_configuration.GetConnectionString("WeatherDBContext"));
             }
         }
 

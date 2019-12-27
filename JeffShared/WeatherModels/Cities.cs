@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace JeffShared.WeatherModels
 {
@@ -15,6 +17,8 @@ namespace JeffShared.WeatherModels
         public string Country { get; set; }
         public int TimeLag { get; set; }
 
-        public virtual ICollection<Readings> Readings { get; set; }
+		[JsonIgnore]
+		[IgnoreDataMember]
+		public virtual ICollection<Readings> Readings { get; set; }
     }
 }

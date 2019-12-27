@@ -20,17 +20,17 @@ namespace JeffAPI.Controllers
 		private IWeatherService _weatherService;
 		private readonly IMapper _mapper;
 		private readonly IMemoryCache _cache;
-		private readonly WeatherDBContext _weatherDBContext;
+		private readonly IWeatherRepository _weatherRepository;
 		private List<WeatherParameters> _cities;
 		MemoryCacheEntryOptions _cacheExpirationOptions;
 
 		public WeatherController(IWeatherService weatherService, IMapper mapper, IMemoryCache cache,
-			WeatherDBContext weatherDBContext)
+			IWeatherRepository weatherRepository)
 		{
 			_weatherService = weatherService;
 			_mapper = mapper;
 			_cache = cache;
-			_weatherDBContext = weatherDBContext;
+			_weatherRepository = weatherRepository;
 			_cities = GetCities();
 			_cacheExpirationOptions = new MemoryCacheEntryOptions
 			{
@@ -62,11 +62,16 @@ namespace JeffAPI.Controllers
 		[Route("cities")]
 		public ActionResult<List<WeatherParameters>> Cities(bool uk)
 		{
-
-
 			return uk ? _cities.Where(c => c.Country == "uk").ToList() : _cities.Where(c => c.Country != "uk").ToList();
 		}
 
+		[EnableCors("AnyGET")]
+		[Route("history/{name}")]
+		public ActionResult<List<Readings>> GetHistory(string name)
+		{
+			return _weatherRepository.GetHistory(name);
+		}
+		
 		// POST: api/Weather
 		[HttpPost]
         public void Post([FromBody] string value)
@@ -87,37 +92,7 @@ namespace JeffAPI.Controllers
 
 		List<WeatherParameters> GetCities()
 		{
-			List<WeatherParameters> dbCities; 
-			using (var context = new WeatherDBContext())
-			{
-
-
-				dbCities = context.Cities.Select(c => new WeatherParameters {
-
-					
-						Name = c.Name,
-						Country = c.Country,
-						TimeLag = c.TimeLag
-					}
-				).ToList();
-			}
-			return dbCities;
-			//var cities = new List<WeatherParameters>();
-			//cities.Add(new WeatherParameters { Name = "Northwich", Country = "uk", TimeLag = 0 });
-			//cities.Add(new WeatherParameters { Name = "Durham", Country = "uk", TimeLag = 0 });
-			//cities.Add(new WeatherParameters { Name = "London", Country = "uk", TimeLag = 0 });
-			//cities.Add(new WeatherParameters { Name = "Bournemouth", Country = "uk", TimeLag = 0 });
-			//cities.Add(new WeatherParameters { Name = "Edinburgh", Country = "uk", TimeLag = 0 });
-			//cities.Add(new WeatherParameters { Name = "Birmingham", Country = "uk", TimeLag = 0 });
-
-			//cities.Add(new WeatherParameters { Name = "Stockholm", Country = "se", TimeLag = 1 });
-			//cities.Add(new WeatherParameters { Name = "Copenhagen", Country = "dk", TimeLag = 1 });
-			//cities.Add(new WeatherParameters { Name = "Roma", Country = "it", TimeLag = 1 });
-			//cities.Add(new WeatherParameters { Name = "New York", Country = "us", TimeLag = -5 });
-			//cities.Add(new WeatherParameters { Name = "Paris", Country = "fr", TimeLag = 1 });
-			//cities.Add(new WeatherParameters { Name = "Perth", Country = "au", TimeLag = 7 });
-
-			//return cities;
+			return _weatherRepository.GetCities();
 		}
 
 		

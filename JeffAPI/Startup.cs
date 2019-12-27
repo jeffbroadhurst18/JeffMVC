@@ -52,6 +52,7 @@ namespace JeffAPI
 			services.AddSingleton<ITidesService, TidesService>();
 			services.AddSingleton<ICountryService, CountryService>();
 			services.AddSingleton<IWeatherService, WeatherService>();
+			services.AddScoped<IWeatherRepository, WeatherRepository>();
 			services.AddAutoMapper(); //Adds IMapper as injectable type
 			services.AddMemoryCache();
 			services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<LocationContext>();
@@ -88,7 +89,7 @@ namespace JeffAPI
 			services.AddDbContext<LocationContext>(options =>
 					options.UseSqlServer(Configuration.GetConnectionString("LocationContext"), b => b.MigrationsAssembly("JeffShared")));
 			services.AddDbContext<WeatherDBContext>(options =>
-					options.UseSqlServer(Configuration.GetConnectionString("LocationContext"), b => b.MigrationsAssembly("JeffShared")));
+					options.UseSqlServer(Configuration.GetConnectionString("WeatherDBContext"), b => b.MigrationsAssembly("JeffShared")));
 
 			services.Configure<IdentityOptions>(options =>
 			{
