@@ -6,6 +6,6 @@ namespace JeffShared.WeatherModels
 	public interface IWeatherRepository
 	{
 		List<WeatherParameters> GetCities();
-		List<Readings> GetHistory(string name);
+		List<Readings> GetHistory(string name, int hours);
 	}
 }

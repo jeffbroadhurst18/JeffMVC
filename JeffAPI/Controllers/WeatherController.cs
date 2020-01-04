@@ -66,10 +66,10 @@ namespace JeffAPI.Controllers
 		}
 
 		[EnableCors("AnyGET")]
-		[Route("history/{name}")]
-		public ActionResult<List<Readings>> GetHistory(string name)
+		[Route("history/{name}/{hours}")]
+		public ActionResult<List<Readings>> GetHistory(string name,int hours)
 		{
-			return _weatherRepository.GetHistory(name);
+			return _weatherRepository.GetHistory(name,hours);
 		}
 		
 		// POST: api/Weather

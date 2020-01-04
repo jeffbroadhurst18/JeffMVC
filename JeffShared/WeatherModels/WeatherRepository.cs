@@ -31,10 +31,10 @@ namespace JeffShared.WeatherModels
 			return dbCities;
 		}
 
-		public List<Readings> GetHistory(string name)
+		public List<Readings> GetHistory(string name,int hours)
 		{
 			List<Readings> readings = _context.Readings.Include(c => c.City).Where(r => r.City.Name == name).
-				OrderByDescending(d => d.CurrentTime).ToList();
+				OrderByDescending(d => d.CurrentTime).Take(hours).ToList();
 			return readings;
 		}
 	}
