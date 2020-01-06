@@ -7,5 +7,7 @@ namespace JeffShared.WeatherModels
 	{
 		List<WeatherParameters> GetCities();
 		List<Readings> GetHistory(string name, int hours);
+
+		List<Readings> GetHistory(string name);
 	}
 }
