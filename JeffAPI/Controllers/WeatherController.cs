@@ -78,6 +78,15 @@ namespace JeffAPI.Controllers
 		{
 			return _weatherRepository.GetHistory(name);
 		}
+
+		[EnableCors("AnyGET")]
+		[Route("monthly/{city}/{month}")]
+		public ActionResult<WeatherSummary> GetMonthlyData(string city, int month)
+		{
+			return _weatherRepository.GetMonthlyData(city, month);
+		}
+
+
 		// POST: api/Weather
 		[HttpPost]
         public void Post([FromBody] string value)

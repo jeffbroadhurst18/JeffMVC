@@ -24,10 +24,10 @@ namespace JeffShared.WeatherModels
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-			   optionsBuilder.UseSqlServer(_configuration.GetConnectionString("WeatherDBContext"));
-            }
+      //      if (!optionsBuilder.IsConfigured)
+      //      {
+			   //optionsBuilder.UseSqlServer(_configuration.GetConnectionString("WeatherDBContext"));
+      //      }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
