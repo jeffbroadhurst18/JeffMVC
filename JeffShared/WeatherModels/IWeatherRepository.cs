@@ -10,5 +10,6 @@ namespace JeffShared.WeatherModels
 		List<Readings> GetHistory(string name, int hours);
 		List<Readings> GetHistory(string name);
         WeatherSummary GetMonthlyData(string city,int month);
-    }
+		List<WeatherSummary> GetMonthlyData(string city);
+	}
 }

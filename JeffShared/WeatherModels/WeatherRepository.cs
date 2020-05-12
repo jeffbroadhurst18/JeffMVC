@@ -61,7 +61,7 @@ namespace JeffShared.WeatherModels
             {
                 City = key.Name,
                 Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(key.Month),
-                MaxTemp = Truncate(group.Max(t => t.Temperature),1),
+                MaxTemp = Truncate(group.Max(t => t.Temperature), 1),
                 MinTemp = Truncate(group.Min(t => t.Temperature), 1),
                 AvgTemp = Truncate(group.Average(t => t.Temperature), 1),
                 MaxWind = Truncate(group.Max(t => t.Wind), 1),
@@ -80,14 +80,25 @@ namespace JeffShared.WeatherModels
                                },
                                 (key, group) => new DailySummary
                                 {
-                                    City = key.Name,
                                     Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(key.Month),
                                     Day = key.Day,
                                     AvgTemp = Truncate(group.Average(t => t.Temperature), 1)
-                                }).ToList();
+                                }).OrderBy(o => o.Day).ToList();
 
-             summary.DailySummaries = dsList;
-             return summary;
+            summary.DailySummaries = dsList;
+            return summary;
+        }
+
+        public List<WeatherSummary> GetMonthlyData(string city)
+        {
+            var monthlyList = new List<WeatherSummary>();
+            var currentMonth = DateTime.Now.Month;
+
+            for (var i = 0; i < currentMonth; i++)
+            {
+                monthlyList.Add(GetMonthlyData(city, i+1));
+            }
+            return monthlyList;
         }
 
         private static double Truncate(double value, int digits)
@@ -95,6 +106,8 @@ namespace JeffShared.WeatherModels
             double mult = System.Math.Pow(10.0, digits);
             return System.Math.Truncate(value * mult) / mult;
         }
+
+
     }
 
 }

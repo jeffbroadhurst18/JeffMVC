@@ -19,7 +19,6 @@ namespace JeffShared.WeatherModels
 
     public class DailySummary
     {
-        public string City { get; set; }
         public string Month { get; set; }
         public int Day { get; set; }
         public double AvgTemp { get; set; }
