@@ -35,14 +35,14 @@ namespace JeffShared.WeatherModels
 
         public List<Readings> GetHistory(string name, int hours)
         {
-            List<Readings> readings = _context.Readings.Include(c => c.City).Where(r => r.City.Name == name).
+            List<Readings> readings = _context.Readings.Include(c => c.City).Where(r => r.City.Name == name && r.CurrentTime > DateTime.Now.AddDays(-3)).
                 OrderByDescending(d => d.CurrentTime).Take(hours).ToList();
             return readings;
         }
 
         public List<Readings> GetHistory(string name)
         {
-            List<Readings> readings = _context.Readings.Include(c => c.City).Where(r => r.City.Name == name).
+            List<Readings> readings = _context.Readings.Include(c => c.City).Where(r => r.City.Name == name && r.CurrentTime > DateTime.Now.AddDays(-3)).
                 OrderByDescending(d => d.CurrentTime).ToList();
             return readings;
         }
