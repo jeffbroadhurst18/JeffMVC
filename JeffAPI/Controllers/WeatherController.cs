@@ -50,6 +50,10 @@ namespace JeffAPI.Controllers
 			{
 				var weatherData = await _weatherService.GetForecast($"{ weatherParameters.Name},{weatherParameters.Country}");
 				weather = _mapper.Map<JeffShared.ViewModel.Weather>(weatherData);
+				weather.AnnualMax = _weatherRepository.GetAnnualMax(data.Name);
+				weather.AnnualMin = _weatherRepository.GetAnnualMin(data.Name);
+				weather.MonthlyMax = _weatherRepository.GetMonthlyMax(data.Name, DateTime.Now.Month);
+				weather.MonthlyMin = _weatherRepository.GetMonthlyMin(data.Name, DateTime.Now.Month);
 				weather.Query = weatherParameters;
 				// Save data in cache.
 				_cache.Set(cacheKey, weather, _cacheExpirationOptions);

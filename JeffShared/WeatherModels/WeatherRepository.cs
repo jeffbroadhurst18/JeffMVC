@@ -108,7 +108,45 @@ namespace JeffShared.WeatherModels
             return System.Math.Truncate(value * mult) / mult;
         }
 
+        public TemperatureDay GetAnnualMax(string name)
+        {
+            return _context.Readings.Include(c => c.City)
+                                .Where(r => r.City.Name == name).Select(td => new TemperatureDay()
+                                {
+                                    TempDate = new DateTime(td.CurrentTime.Year, td.CurrentTime.Month, td.CurrentTime.Day),
+                                    TempVal = td.Temperature
+                                }).OrderByDescending(z => z.TempVal).First();
+        }
 
+        public TemperatureDay GetAnnualMin(string name)
+        {
+            return _context.Readings.Include(c => c.City)
+                                .Where(r => r.City.Name == name).Select(td => new TemperatureDay()
+                                {
+                                    TempDate = new DateTime(td.CurrentTime.Year, td.CurrentTime.Month, td.CurrentTime.Day),
+                                    TempVal = td.Temperature
+                                }).OrderBy(z => z.TempVal).First();
+        }
+
+        public TemperatureDay GetMonthlyMax(string name, int month)
+        {
+            return _context.Readings.Include(c => c.City)
+                                .Where(r => r.City.Name == name && r.CurrentTime.Month == month).Select(td => new TemperatureDay()
+                                {
+                                    TempDate = new DateTime(td.CurrentTime.Year, td.CurrentTime.Month, td.CurrentTime.Day),
+                                    TempVal = td.Temperature
+                                }).OrderByDescending(z => z.TempVal).First();
+        }
+
+        public TemperatureDay GetMonthlyMin(string name, int month)
+        {
+            return _context.Readings.Include(c => c.City)
+                                .Where(r => r.City.Name == name && r.CurrentTime.Month == month).Select(td => new TemperatureDay()
+                                {
+                                    TempDate = new DateTime(td.CurrentTime.Year, td.CurrentTime.Month, td.CurrentTime.Day),
+                                    TempVal = td.Temperature
+                                }).OrderBy(z => z.TempVal).First();
+        }
     }
 
 }

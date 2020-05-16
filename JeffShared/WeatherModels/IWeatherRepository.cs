@@ -11,5 +11,9 @@ namespace JeffShared.WeatherModels
 		List<Readings> GetHistory(string name);
         WeatherSummary GetMonthlyData(string city,int month);
 		List<WeatherSummary> GetMonthlyData(string city);
+		TemperatureDay GetAnnualMax(string name);
+		TemperatureDay GetAnnualMin(string name);
+		TemperatureDay GetMonthlyMax(string name, int month);
+		TemperatureDay GetMonthlyMin(string name, int month);
 	}
 }
