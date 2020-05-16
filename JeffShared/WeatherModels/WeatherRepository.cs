@@ -35,8 +35,7 @@ namespace JeffShared.WeatherModels
 
         public List<Readings> GetHistory(string name, int hours)
         {
-            List<Readings> readings = _context.Readings.Include(c => c.City).Where(r => r.City.Name == name && r.CurrentTime > DateTime.Now.AddDays(-3)).
-                OrderByDescending(d => d.CurrentTime).Take(hours).ToList();
+            List<Readings> readings = _context.Readings.Where(r => r.City.Name == name && r.CurrentTime > DateTime.Now.AddDays(-3)).Include(c => c.City).OrderByDescending(d => d.CurrentTime).Take(hours).ToList();
             return readings;
         }
 
@@ -82,7 +81,9 @@ namespace JeffShared.WeatherModels
                                 {
                                     Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(key.Month),
                                     Day = key.Day,
-                                    AvgTemp = Truncate(group.Average(t => t.Temperature), 1)
+                                    AvgTemp = Truncate(group.Average(t => t.Temperature), 1),
+                                    MinTemp = Truncate(group.Min(t => t.Temperature), 1),
+                                    MaxTemp = Truncate(group.Max(t => t.Temperature), 1)
                                 }).OrderBy(o => o.Day).ToList();
 
             summary.DailySummaries = dsList;

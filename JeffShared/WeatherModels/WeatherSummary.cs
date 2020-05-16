@@ -22,5 +22,7 @@ namespace JeffShared.WeatherModels
         public string Month { get; set; }
         public int Day { get; set; }
         public double AvgTemp { get; set; }
-    }
+        public double MinTemp { get; set; }
+        public double MaxTemp { get; set; }
+    }  
 }
