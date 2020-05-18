@@ -15,6 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Migrations\20200518175220_InitialCityPair.cs" />
+    <Compile Include="Migrations\20200518175220_InitialCityPair.designer.cs" />
+    <Compile Include="Migrations\WeatherDBContextModelSnapshot.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />

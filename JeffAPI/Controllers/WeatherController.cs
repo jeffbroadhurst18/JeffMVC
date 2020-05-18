@@ -97,22 +97,37 @@ namespace JeffAPI.Controllers
 			return _weatherRepository.GetMonthlyData(city);
 		}
 		// POST: api/Weather
+		[EnableCors("AnyGET")]
+		[Route("citypair")]
 		[HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] CityPairs cityPairs)
         {
+			_weatherRepository.SetCityPairs(cityPairs);
         }
 
-        // PUT: api/Weather/5
-        [HttpPut("{id}")]
+		[EnableCors("AnyGET")]
+		[Route("citypairs")]
+		[HttpDelete]
+		public void DeleteCityPair(int cityPairId)
+		{
+			_weatherRepository.DeleteCityPairs(cityPairId);
+		}
+
+		[EnableCors("AnyGET")]
+		[Route("citypair")]
+		[HttpGet]
+		public ActionResult<List<CityPairs>> GetCityPairs()
+		{
+			return _weatherRepository.RetrieveCityPairs();
+		}
+
+		// PUT: api/Weather/5
+		[HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
 
 		List<WeatherParameters> GetCities()
 		{

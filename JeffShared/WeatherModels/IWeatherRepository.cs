@@ -15,5 +15,8 @@ namespace JeffShared.WeatherModels
 		TemperatureDay GetAnnualMin(string name);
 		TemperatureDay GetMonthlyMax(string name, int month);
 		TemperatureDay GetMonthlyMin(string name, int month);
+		void SetCityPairs(CityPairs cityPairs);
+		void DeleteCityPairs(int cityPairId);
+		List<CityPairs> RetrieveCityPairs();
 	}
 }

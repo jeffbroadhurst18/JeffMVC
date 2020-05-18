@@ -147,6 +147,24 @@ namespace JeffShared.WeatherModels
                                     TempVal = td.Temperature
                                 }).OrderBy(z => z.TempVal).First();
         }
+
+        public void SetCityPairs(CityPairs cityPairs)
+        {
+            _context.Add(cityPairs);
+            _context.SaveChanges();
+        }
+
+        public void DeleteCityPairs(int cityPairId)
+        {
+            var cityPair = _context.CityPairs.Where(k => k.Id == cityPairId).First();
+            _context.Remove(cityPair);
+            _context.SaveChanges();
+        }
+
+        public List<CityPairs> RetrieveCityPairs()
+        {
+            return _context.CityPairs.ToList();
+        }
     }
 
 }
