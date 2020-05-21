@@ -106,11 +106,11 @@ namespace JeffAPI.Controllers
         }
 
 		[EnableCors("AnyGET")]
-		[Route("citypairs")]
+		[Route("citypairs/{id}")]
 		[HttpDelete]
-		public void DeleteCityPair(int cityPairId)
+		public void DeleteCityPair(int id)
 		{
-			_weatherRepository.DeleteCityPairs(cityPairId);
+			_weatherRepository.DeleteCityPairs(id);
 		}
 
 		[EnableCors("AnyGET")]
