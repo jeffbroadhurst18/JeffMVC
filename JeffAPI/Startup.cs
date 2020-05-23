@@ -40,8 +40,8 @@ namespace JeffAPI
 			services.AddHttpClient<IWeatherApiClient, WeatherApiClient>(client =>
 			{
 				client.DefaultRequestHeaders.Accept.Clear();
-				client.DefaultRequestHeaders.Add("X-RapidAPI-Host", Configuration.GetSection("X-RapidAPI-Host").GetSection("host").Value);
-				client.DefaultRequestHeaders.Add("X-RapidAPI-Key", Configuration.GetSection("X-RapidAPI-Key").GetSection("key").Value);
+				//client.DefaultRequestHeaders.Add("X-RapidAPI-Host", Configuration.GetSection("X-RapidAPI-Host").GetSection("host").Value);
+				//client.DefaultRequestHeaders.Add("X-RapidAPI-Key", Configuration.GetSection("X-RapidAPI-Key").GetSection("key").Value);
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			});
 
