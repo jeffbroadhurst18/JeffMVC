@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using JeffShared.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,5 +19,8 @@ namespace JeffShared.WeatherModels
 		void SetCityPairs(CityPairs cityPairs);
 		void DeleteCityPairs(int cityPairId);
 		List<CityPairs> RetrieveCityPairs();
+		Task<List<Profiles>> GetProfiles();
+		Task<bool> UpdateProfile(Profiles profile);
+		
 	}
 }

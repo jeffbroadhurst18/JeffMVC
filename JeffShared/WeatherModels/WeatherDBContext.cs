@@ -6,22 +6,23 @@ using Microsoft.Extensions.Configuration;
 namespace JeffShared.WeatherModels
 {
     public partial class WeatherDBContext : DbContext, IWeatherDBContext
-	{
-		private readonly IConfiguration _configuration;
+    {
+        private readonly IConfiguration _configuration;
 
-		public WeatherDBContext()
+        public WeatherDBContext()
         {
         }
 
         public WeatherDBContext(DbContextOptions<WeatherDBContext> options, IConfiguration configuration)
             : base(options)
         {
-			_configuration = configuration;
-		}
+            _configuration = configuration;
+        }
 
         public virtual DbSet<Cities> Cities { get; set; }
         public virtual DbSet<Readings> Readings { get; set; }
         public virtual DbSet<CityPairs> CityPairs { get; set; }
+        public virtual DbSet<Profiles> Profiles {get;set;}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

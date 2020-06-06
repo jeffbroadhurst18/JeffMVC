@@ -17,6 +17,8 @@
   <ItemGroup>
     <Compile Include="Migrations\20200518175220_InitialCityPair.cs" />
     <Compile Include="Migrations\20200518175220_InitialCityPair.designer.cs" />
+    <Compile Include="Migrations\20200606175147_Profiles.cs" />
+    <Compile Include="Migrations\20200606175147_Profiles.designer.cs" />
     <Compile Include="Migrations\WeatherDBContextModelSnapshot.cs" />
   </ItemGroup>
 

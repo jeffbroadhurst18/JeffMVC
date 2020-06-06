@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 
 namespace JeffShared.WeatherModels
 {
@@ -164,6 +164,18 @@ namespace JeffShared.WeatherModels
         public List<CityPairs> RetrieveCityPairs()
         {
             return _context.CityPairs.ToList();
+        }
+
+        public async Task<List<Profiles>> GetProfiles()
+        {
+            return await _context.Profiles.OrderBy(t => t.Id).ToListAsync();
+        }
+
+        public async Task<bool> UpdateProfile(Profiles profile)
+        {
+            _context.Update(profile);
+            var recs = await _context.SaveChangesAsync();
+            return recs > 0; ;
         }
     }
 
