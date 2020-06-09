@@ -97,7 +97,7 @@ namespace JeffShared.WeatherModels
 
             for (var i = 0; i < currentMonth; i++)
             {
-                monthlyList.Add(GetMonthlyData(city, i+1));
+                monthlyList.Add(GetMonthlyData(city, i + 1));
             }
             return monthlyList;
         }
@@ -168,11 +168,21 @@ namespace JeffShared.WeatherModels
 
         public async Task<List<Profiles>> GetProfiles()
         {
-            return await _context.Profiles.OrderBy(t => t.Id).ToListAsync();
+            var result = await _context.Profiles.OrderBy(t => t.Id).ToListAsync();
+            result.ForEach(g =>
+            {
+                if (g.LastUpdated.Date < DateTime.Now.Date)
+                {
+                    g.Active = 0;
+                    g.PicDisabled = 0;
+                }
+            });
+            return result;
         }
 
         public async Task<bool> UpdateProfile(Profiles profile)
         {
+            profile.LastUpdated = DateTime.Now;
             _context.Update(profile);
             var recs = await _context.SaveChangesAsync();
             return recs > 0; ;
