@@ -54,6 +54,7 @@ namespace JeffAPI
 			services.AddSingleton<IWeatherService, WeatherService>();
 			services.AddScoped<IWeatherRepository, WeatherRepository>();
 			services.AddAutoMapper(); //Adds IMapper as injectable type
+			services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<WeatherDBContext>();
 			services.AddMemoryCache();
 			
 			services.AddTransient<CreateUser>();
@@ -93,7 +94,7 @@ namespace JeffAPI
 			services.Configure<IdentityOptions>(options =>
 			{
 				// Password settings
-				options.Password.RequireDigit = true;
+				options.Password.RequireDigit = false;
 				options.Password.RequiredLength = 6;
 				options.Password.RequireNonAlphanumeric = false;
 				options.Password.RequireUppercase = true;
@@ -135,16 +136,16 @@ namespace JeffAPI
 			app.UseHttpsRedirection();
 			app.UseAuthentication();
 			app.UseMvc();
-			
 
-			
 
-			//using (var scope = app.ApplicationServices.CreateScope())
-			//{
-			//	var seeder = scope.ServiceProvider.GetService<CreateUser>();
-			//	seeder.CreateFirstUser().Wait(); ; //seeder is async .Wait waits for it to finish without making 
-			//							// the whole method async.
-			//}
+
+
+			using (var scope = app.ApplicationServices.CreateScope())
+			{
+				var seeder = scope.ServiceProvider.GetService<CreateUser>();
+				seeder.CreateFirstUser().Wait(); ; //seeder is async .Wait waits for it to finish without making 
+												   // the whole method async.
+			}
 		}
 
 		

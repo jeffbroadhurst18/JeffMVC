@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\AccountController.cs" />
     <Compile Remove="Controllers\CommentsCachedController.cs" />
     <Compile Remove="Controllers\CommentsController.cs" />
     <Compile Remove="Controllers\CountriesController.cs" />

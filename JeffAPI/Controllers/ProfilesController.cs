@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Cors;
 namespace JeffAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class ProfilesController : ControllerBase
     {
