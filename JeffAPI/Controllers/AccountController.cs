@@ -54,8 +54,9 @@ namespace JeffAPI.Controllers
 
 			if (login != null)
 			{
-				var tokenString = GenerateJSONWebToken(login);
-				response = Ok(new { token = tokenString });
+				DateTime expires;
+				var tokenString = GenerateJSONWebToken(login, out expires);
+				response = Ok(new { token = tokenString, user = login.Username, expires });
 			}
 
 			return response;
@@ -97,8 +98,8 @@ namespace JeffAPI.Controllers
 						Password = model.Password,
 						RememberMe = false
 					};
-
-					var tokenString = GenerateJSONWebToken(login);
+					DateTime expires;
+					var tokenString = GenerateJSONWebToken(login, out expires);
 					return Ok(new { token = tokenString });
 				}
 				return BadRequest(new { message = "Failed to login" });
@@ -110,7 +111,7 @@ namespace JeffAPI.Controllers
 			}
 		}
 
-		private string GenerateJSONWebToken(Login userInfo)
+		private string GenerateJSONWebToken(Login userInfo, out DateTime expires)
 		{
 			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
 			var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -121,6 +122,7 @@ namespace JeffAPI.Controllers
 			  expires: DateTime.Now.AddMinutes(120),
 			  signingCredentials: credentials);
 
+			expires = token.ValidTo;
 			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 
