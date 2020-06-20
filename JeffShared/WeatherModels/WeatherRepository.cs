@@ -166,9 +166,9 @@ namespace JeffShared.WeatherModels
             return _context.CityPairs.ToList();
         }
 
-        public async Task<List<Profiles>> GetProfiles()
+        public async Task<List<Profiles>> GetProfiles(string name)
         {
-            var result = await _context.Profiles.OrderBy(t => t.Id).ToListAsync();
+            var result = await _context.Profiles.Where(z => z.UserName == name).OrderBy(t => t.Id).ToListAsync();
             result.ForEach(g =>
             {
                 if (g.LastUpdated.Date < DateTime.Now.Date)

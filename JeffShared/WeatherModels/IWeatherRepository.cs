@@ -19,7 +19,7 @@ namespace JeffShared.WeatherModels
 		void SetCityPairs(CityPairs cityPairs);
 		void DeleteCityPairs(int cityPairId);
 		List<CityPairs> RetrieveCityPairs();
-		Task<List<Profiles>> GetProfiles();
+		Task<List<Profiles>> GetProfiles(string name);
 		Task<bool> UpdateProfile(Profiles profile);
 		
 	}

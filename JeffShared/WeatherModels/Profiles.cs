@@ -14,5 +14,6 @@ namespace JeffShared.WeatherModels
         public int Active { get; set; }
         public int PicDisabled { get; set; }
         public DateTime LastUpdated { get; set; }
+        public string  UserName { get; set; }
     }
 }

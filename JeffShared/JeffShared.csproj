@@ -24,6 +24,10 @@
     <Compile Include="Migrations\20200609160538_Profiles3.designer.cs" />
     <Compile Include="Migrations\20200614131828_Identity.cs" />
     <Compile Include="Migrations\20200614131828_Identity.designer.cs" />
+    <Compile Include="Migrations\20200620172726_User.cs" />
+    <Compile Include="Migrations\20200620172726_User.Designer.cs" />
+    <Compile Include="Migrations\20200620174809_User2.cs" />
+    <Compile Include="Migrations\20200620174809_User2.Designer.cs" />
     <Compile Include="Migrations\WeatherDBContextModelSnapshot.cs" />
   </ItemGroup>
 

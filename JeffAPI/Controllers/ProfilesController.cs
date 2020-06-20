@@ -27,9 +27,10 @@ namespace JeffAPI.Controllers
         // GET: api/Profiles
         [HttpGet]
         [EnableCors("AnyGET")]
-        public async Task<ActionResult<IEnumerable<Profiles>>> GetProfiles()
+        [Route("{name}")]
+        public async Task<ActionResult<IEnumerable<Profiles>>> GetProfiles(string name)
         {
-            return await _weatherRepository.GetProfiles();
+            return await _weatherRepository.GetProfiles(name);
         }
 
         // PUT: api/Profiles/5

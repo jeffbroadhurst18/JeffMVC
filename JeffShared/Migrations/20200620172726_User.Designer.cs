@@ -4,14 +4,16 @@ using JeffShared.WeatherModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JeffShared.Migrations
 {
     [DbContext(typeof(WeatherDBContext))]
-    partial class WeatherDBContextModelSnapshot : ModelSnapshot
+    [Migration("20200620172726_User")]
+    partial class User
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,7 +77,7 @@ namespace JeffShared.Migrations
 
                     b.Property<int>("PicVotesUp");
 
-                    b.Property<string>("UserName");
+                    b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
 
