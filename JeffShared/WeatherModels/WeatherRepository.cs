@@ -187,6 +187,32 @@ namespace JeffShared.WeatherModels
             var recs = await _context.SaveChangesAsync();
             return recs > 0; ;
         }
+
+        public async Task<List<Moods>> GetMoods(string name, int month)
+        {
+            int year = DateTime.Now.Year;
+            int lastDay = DateTime.DaysInMonth(year, month);
+            DateTime startDate = new DateTime(year, month, 1).Date;
+            DateTime endDate = new DateTime(year, month, lastDay).Date;
+
+            var moods = await _context.Moods.Where(x => x.UserName == name && x.MoodDate >= startDate && x.MoodDate <= endDate)
+                .OrderBy(c => c.MoodDate).ToListAsync();
+
+            return moods;
+        }
+
+        public async Task<int> PostMoods(Moods mood)
+        {
+            var existing = _context.Moods.Where(m => m.UserName == mood.UserName && m.MoodDate == mood.MoodDate);
+            await existing.ForEachAsync(async p => { 
+                _context.Remove(p);
+                await _context.SaveChangesAsync();
+            });
+
+            _context.Add(mood);
+            return await _context.SaveChangesAsync();
+            
+        } 
     }
 
 }

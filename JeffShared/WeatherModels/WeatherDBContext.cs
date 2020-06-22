@@ -25,6 +25,7 @@ namespace JeffShared.WeatherModels
         public virtual DbSet<Readings> Readings { get; set; }
         public virtual DbSet<CityPairs> CityPairs { get; set; }
         public virtual DbSet<Profiles> Profiles {get;set;}
+        public virtual DbSet<Moods> Moods { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

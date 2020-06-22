@@ -21,6 +21,7 @@ namespace JeffShared.WeatherModels
 		List<CityPairs> RetrieveCityPairs();
 		Task<List<Profiles>> GetProfiles(string name);
 		Task<bool> UpdateProfile(Profiles profile);
-		
-	}
+        Task<List<Moods>> GetMoods(string name, int month);
+        Task<int> PostMoods(Moods mood);
+    }
 }
