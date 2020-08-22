@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\**" />
+    <EmbeddedResource Remove="Migrations\**" />
+    <None Remove="Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="LocationContext.cs" />
+    <Compile Remove="Providers\JwtProvider.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Migrations\20200518175220_InitialCityPair.cs" />
+    <Compile Include="Migrations\20200518175220_InitialCityPair.designer.cs" />
+    <Compile Include="Migrations\20200606175147_Profiles.cs" />
+    <Compile Include="Migrations\20200606175147_Profiles.designer.cs" />
+    <Compile Include="Migrations\20200609160538_Profiles3.cs" />
+    <Compile Include="Migrations\20200609160538_Profiles3.designer.cs" />
+    <Compile Include="Migrations\20200614131828_Identity.cs" />
+    <Compile Include="Migrations\20200614131828_Identity.designer.cs" />
+    <Compile Include="Migrations\20200620172726_User.cs" />
+    <Compile Include="Migrations\20200620172726_User.Designer.cs" />
+    <Compile Include="Migrations\20200620174809_User2.cs" />
+    <Compile Include="Migrations\20200620174809_User2.Designer.cs" />
+    <Compile Include="Migrations\20200622184507_Moods.cs" />
+    <Compile Include="Migrations\20200622184507_Moods.Designer.cs" />
+    <Compile Include="Migrations\20200622190920_Moods2.cs" />
+    <Compile Include="Migrations\20200622190920_Moods2.Designer.cs" />
+    <Compile Include="Migrations\20200704180901_Moods3.cs" />
+    <Compile Include="Migrations\20200704180901_Moods3.Designer.cs" />
+    <Compile Include="Migrations\20200820175349_MinMax.cs" />
+    <Compile Include="Migrations\20200820175349_MinMax.Designer.cs" />
+    <Compile Include="Migrations\20200820182930_MinMax2.cs" />
+    <Compile Include="Migrations\20200820182930_MinMax2.Designer.cs" />
+    <Compile Include="Migrations\WeatherDBContextModelSnapshot.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.6.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.EntityFrameworkCore">
+      <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.entityframeworkcore\2.1.1\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+      <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.configuration.abstractions\2.1.1\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Providers\" />
+  </ItemGroup>
+
+</Project>
