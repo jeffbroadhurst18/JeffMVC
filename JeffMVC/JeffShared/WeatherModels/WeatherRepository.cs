@@ -259,7 +259,6 @@ namespace JeffShared.WeatherModels
             {
                 l.MoodMonth = l.MoodDate.Month;
             });
-
             return moods;
         }
     }
