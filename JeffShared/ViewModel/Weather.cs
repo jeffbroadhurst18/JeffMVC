@@ -17,6 +17,17 @@ namespace JeffShared.ViewModel
 		public DateTime Sunset { get; set; }
 		public DateTime CurrentTime { get; set; }
 		public WeatherParameters Query { get; set; }
+		public TemperatureDay AnnualMin { get; set; }
+		public TemperatureDay AnnualMax { get; set; }
+		public TemperatureDay MonthlyMin { get; set; }
+		public TemperatureDay MonthlyMax { get; set; }
+
+	}
+
+	public class TemperatureDay
+	{
+		public DateTime TempDate { get; set; }
+		public double TempVal { get; set; }
 	}
 
 	public class WeatherParameters

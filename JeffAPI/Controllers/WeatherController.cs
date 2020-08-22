@@ -50,6 +50,10 @@ namespace JeffAPI.Controllers
 			{
 				var weatherData = await _weatherService.GetForecast($"{ weatherParameters.Name},{weatherParameters.Country}");
 				weather = _mapper.Map<JeffShared.ViewModel.Weather>(weatherData);
+				weather.AnnualMax = _weatherRepository.GetAnnualMax(data.Name);
+				weather.AnnualMin = _weatherRepository.GetAnnualMin(data.Name);
+				weather.MonthlyMax = _weatherRepository.GetMonthlyMax(data.Name, DateTime.Now.Month);
+				weather.MonthlyMin = _weatherRepository.GetMonthlyMin(data.Name, DateTime.Now.Month);
 				weather.Query = weatherParameters;
 				// Save data in cache.
 				_cache.Set(cacheKey, weather, _cacheExpirationOptions);
@@ -66,29 +70,64 @@ namespace JeffAPI.Controllers
 		}
 
 		[EnableCors("AnyGET")]
+		[Route("history/{name}/{hours}")]
+		public ActionResult<List<Readings>> GetHistory(string name,int hours)
+		{
+			return _weatherRepository.GetHistory(name,hours);
+		}
+
+		[EnableCors("AnyGET")]
 		[Route("history/{name}")]
 		public ActionResult<List<Readings>> GetHistory(string name)
 		{
 			return _weatherRepository.GetHistory(name);
 		}
+
+		[EnableCors("AnyGET")]
+		[Route("monthly/{city}/{month}")]
+		public ActionResult<WeatherSummary> GetMonthlyData(string city, int month)
+		{
+			return _weatherRepository.GetMonthlyData(city, month);
+		}
 		
+		[EnableCors("AnyGET")]
+		[Route("monthly/{city}")]
+		public ActionResult<List<WeatherSummary>> GetMonthlyData(string city)
+		{
+			return _weatherRepository.GetMonthlyData(city);
+		}
 		// POST: api/Weather
+		[EnableCors("AnyGET")]
+		[Route("citypair")]
 		[HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] CityPairs cityPairs)
         {
+			_weatherRepository.SetCityPairs(cityPairs);
         }
 
-        // PUT: api/Weather/5
-        [HttpPut("{id}")]
+		[EnableCors("AnyGET")]
+		[Route("citypairs/{id}")]
+		[HttpDelete]
+		public void DeleteCityPair(int id)
+		{
+			_weatherRepository.DeleteCityPairs(id);
+		}
+
+		[EnableCors("AnyGET")]
+		[Route("citypair")]
+		[HttpGet]
+		public ActionResult<List<CityPairs>> GetCityPairs()
+		{
+			return _weatherRepository.RetrieveCityPairs();
+		}
+
+		// PUT: api/Weather/5
+		[HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
 
 		List<WeatherParameters> GetCities()
 		{

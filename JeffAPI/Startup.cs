@@ -40,8 +40,8 @@ namespace JeffAPI
 			services.AddHttpClient<IWeatherApiClient, WeatherApiClient>(client =>
 			{
 				client.DefaultRequestHeaders.Accept.Clear();
-				client.DefaultRequestHeaders.Add("X-RapidAPI-Host", Configuration.GetSection("X-RapidAPI-Host").GetSection("host").Value);
-				client.DefaultRequestHeaders.Add("X-RapidAPI-Key", Configuration.GetSection("X-RapidAPI-Key").GetSection("key").Value);
+				//client.DefaultRequestHeaders.Add("X-RapidAPI-Host", Configuration.GetSection("X-RapidAPI-Host").GetSection("host").Value);
+				//client.DefaultRequestHeaders.Add("X-RapidAPI-Key", Configuration.GetSection("X-RapidAPI-Key").GetSection("key").Value);
 				client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			});
 
@@ -54,8 +54,9 @@ namespace JeffAPI
 			services.AddSingleton<IWeatherService, WeatherService>();
 			services.AddScoped<IWeatherRepository, WeatherRepository>();
 			services.AddAutoMapper(); //Adds IMapper as injectable type
+			services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<WeatherDBContext>();
 			services.AddMemoryCache();
-			services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<LocationContext>();
+			
 			services.AddTransient<CreateUser>();
 
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -86,15 +87,14 @@ namespace JeffAPI
 			});
 
 			//====
-			services.AddDbContext<LocationContext>(options =>
-					options.UseSqlServer(Configuration.GetConnectionString("LocationContext"), b => b.MigrationsAssembly("JeffShared")));
+			
 			services.AddDbContext<WeatherDBContext>(options =>
 					options.UseSqlServer(Configuration.GetConnectionString("WeatherDBContext"), b => b.MigrationsAssembly("JeffShared")));
 
 			services.Configure<IdentityOptions>(options =>
 			{
 				// Password settings
-				options.Password.RequireDigit = true;
+				options.Password.RequireDigit = false;
 				options.Password.RequiredLength = 6;
 				options.Password.RequireNonAlphanumeric = false;
 				options.Password.RequireUppercase = true;
@@ -136,16 +136,16 @@ namespace JeffAPI
 			app.UseHttpsRedirection();
 			app.UseAuthentication();
 			app.UseMvc();
-			
 
-			
 
-			//using (var scope = app.ApplicationServices.CreateScope())
-			//{
-			//	var seeder = scope.ServiceProvider.GetService<CreateUser>();
-			//	seeder.CreateFirstUser().Wait(); ; //seeder is async .Wait waits for it to finish without making 
-			//							// the whole method async.
-			//}
+
+
+			using (var scope = app.ApplicationServices.CreateScope())
+			{
+				var seeder = scope.ServiceProvider.GetService<CreateUser>();
+				seeder.CreateFirstUser().Wait(); ; //seeder is async .Wait waits for it to finish without making 
+												   // the whole method async.
+			}
 		}
 
 		

@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\CommentsCachedController.cs" />
+    <Compile Remove="Controllers\CommentsController.cs" />
+    <Compile Remove="Controllers\CountriesController.cs" />
+    <Compile Remove="Controllers\MemberAlbumsController.cs" />
+    <Compile Remove="Controllers\StationsController.cs" />
+    <Compile Remove="Controllers\TidesController.cs" />
     <Compile Remove="Migrations\20190625182904_AddingIdentity.cs" />
     <Compile Remove="Migrations\20190625182904_AddingIdentity.Designer.cs" />
   </ItemGroup>
@@ -21,7 +27,7 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
   </ItemGroup>
 
   <ItemGroup>
