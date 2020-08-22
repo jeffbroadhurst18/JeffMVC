@@ -55,6 +55,31 @@ namespace JeffShared.Migrations
                     b.ToTable("CityPairs");
                 });
 
+            modelBuilder.Entity("JeffShared.WeatherModels.MinMaxTemps", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CityId");
+
+                    b.Property<DateTime>("MaxDate");
+
+                    b.Property<double>("MaxTemperature");
+
+                    b.Property<DateTime>("MinDate");
+
+                    b.Property<double>("MinTemperature");
+
+                    b.Property<int>("Month");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.ToTable("MinMaxTemps");
+                });
+
             modelBuilder.Entity("JeffShared.WeatherModels.Moods", b =>
                 {
                     b.Property<int>("Id")
@@ -64,6 +89,8 @@ namespace JeffShared.Migrations
                     b.Property<DateTime>("CreatedOn");
 
                     b.Property<DateTime>("MoodDate");
+
+                    b.Property<int>("MoodMonth");
 
                     b.Property<int>("Score");
 
@@ -289,6 +316,14 @@ namespace JeffShared.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("JeffShared.WeatherModels.MinMaxTemps", b =>
+                {
+                    b.HasOne("JeffShared.WeatherModels.Cities", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("JeffShared.WeatherModels.Readings", b =>

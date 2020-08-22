@@ -12,5 +12,6 @@ namespace JeffShared.WeatherModels
         public DateTime CreatedOn { get; set; }
         public string UserName { get; set; }
         public int Score { get; set; }
+        public int MoodMonth { get; set; }
     }
 }
