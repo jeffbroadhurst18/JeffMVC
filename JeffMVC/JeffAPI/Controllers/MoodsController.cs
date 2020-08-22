@@ -1,15 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using JeffShared.WeatherModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JeffAPI.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+  //  [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class MoodsController : ControllerBase
     {
@@ -29,16 +33,8 @@ namespace JeffAPI.Controllers
             return await _weatherRepository.GetMoods(name, month);
         }
 
-        [HttpGet]
         [EnableCors("AnyGET")]
-        [Route("{name}")]
-        public async Task<ActionResult<IList<Moods>>> GetMoods(string name)
-        {
-            return await _weatherRepository.GetMoods(name);
-        }
-
-        [EnableCors("AnyGET")]
-        [HttpPut]
+        [HttpPost]
         [Route("")]
         public async Task<IActionResult> PostMoods([FromBody] Moods mood)
         {
