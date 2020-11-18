@@ -22,7 +22,6 @@ namespace JeffAPI.Controllers
 		private readonly SignInManager<IdentityUser> _signInManager;
 		private readonly UserManager<IdentityUser> _userManager;
 		private readonly IConfiguration _config;
-		private readonly IMapper _mapper;
 
 		public AccountController(IMapper mapper, SignInManager<IdentityUser> signInManager,
 			UserManager<IdentityUser> userManager, IConfiguration config)

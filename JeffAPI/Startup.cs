@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http.Headers;
 using System.Text;
 using AutoMapper;
+using JeffAPI.Hubs;
 using JeffShared;
 using JeffShared.WeatherModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,12 +11,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using NLog;
+using NLog.Extensions.Logging;
 
 namespace JeffAPI
 {
@@ -22,6 +28,7 @@ namespace JeffAPI
 	{
 		public Startup(IConfiguration configuration)
 		{
+			LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 			Configuration = configuration;
 		}
 
@@ -30,6 +37,12 @@ namespace JeffAPI
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			var builder = new ConfigurationBuilder()
+				.SetBasePath(Path.Combine(AppContext.BaseDirectory))
+				.AddJsonFile("appsettings.json", optional: true);
+
+			IConfigurationRoot configuration = builder.Build();
+
 			services.AddHttpClient<ITidesApiClient, TidesApiClient>(client =>
 			{
 				client.DefaultRequestHeaders.Accept.Clear();
@@ -73,6 +86,8 @@ namespace JeffAPI
 						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("Tokens").GetSection("Key").Value))
 					};
 				});
+
+            services.AddSignalR();
 
 			//============
 			services.AddCors(cfg =>
@@ -136,7 +151,10 @@ namespace JeffAPI
 			app.UseHttpsRedirection();
 			app.UseAuthentication();
 			app.UseMvc();
-
+			app.UseSignalR(route =>
+			{
+				route.MapHub<SignalHub>("/signalhub");
+			});
 
 
 
