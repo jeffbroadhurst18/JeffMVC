@@ -17,7 +17,10 @@ namespace JeffShared.WeatherModels
         public string Country { get; set; }
         public int TimeLag { get; set; }
 
-		[JsonIgnore]
+        public double Lat { get; set; }
+        public double Lon { get; set; }
+
+        [JsonIgnore]
 		[IgnoreDataMember]
 		public virtual ICollection<Readings> Readings { get; set; }
     }

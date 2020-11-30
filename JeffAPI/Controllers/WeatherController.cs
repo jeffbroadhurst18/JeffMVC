@@ -30,15 +30,17 @@ namespace JeffAPI.Controllers
         private readonly ILogger<WeatherController> _logger;
         private List<WeatherParameters> _cities;
         MemoryCacheEntryOptions _cacheExpirationOptions;
+        IHubContext<SignalHub, ITypedHubClient> _messageHubContext;
 
         public WeatherController(IWeatherService weatherService, IMapper mapper, IMemoryCache cache,
-            IWeatherRepository weatherRepository, IHubContext<SignalHub> hubContext, ILogger<WeatherController> logger)
+            IWeatherRepository weatherRepository, IHubContext<SignalHub> hubContext, ILogger<WeatherController> logger, IHubContext<SignalHub, ITypedHubClient> messageHubContext)
         {
             _weatherService = weatherService;
             _mapper = mapper;
             _cache = cache;
             _weatherRepository = weatherRepository;
             _hubContext = hubContext;
+            _messageHubContext = messageHubContext;
             _logger = logger;
             _cities = GetCities();
             _cacheExpirationOptions = new MemoryCacheEntryOptions
@@ -53,13 +55,12 @@ namespace JeffAPI.Controllers
         {
             try
             {
-
                 var cacheKey = $"FORECAST_{data.Name}";
                 var weatherParameters = _cities.FirstOrDefault(c => c.Name.ToLower() == data.Name.ToLower());
 
                 if (!_cache.TryGetValue(cacheKey, out JeffShared.ViewModel.Weather weather))
                 {
-                    var weatherData = await _weatherService.GetForecast($"{ weatherParameters.Name},{weatherParameters.Country}");
+                    var weatherData = await _weatherService.GetCurrent($"{ weatherParameters.Name},{weatherParameters.Country}");
                     weather = _mapper.Map<JeffShared.ViewModel.Weather>(weatherData);
                     weather.AnnualMax = _weatherRepository.GetAnnualMax(data.Name);
                     weather.AnnualMin = _weatherRepository.GetAnnualMin(data.Name);
@@ -69,10 +70,11 @@ namespace JeffAPI.Controllers
                     // Save data in cache.
                     //	_cache.Set(cacheKey, weather, _cacheExpirationOptions);
 
-                    HttpContent c = new StringContent(JsonConvert.SerializeObject(weather), Encoding.UTF8, "application/json");
-                    _logger.LogInformation($"Sending SignalMessageReceived_{ weather.Name}");
+                    var converted = JsonConvert.SerializeObject(weather);
+                    _logger.LogInformation($"Sending SignalMessageReceived for {weather.Name}");
                     _logger.LogInformation($"Content {JsonConvert.SerializeObject(weather)}");
-                    await _hubContext.Clients.All.SendAsync($"SignalMessageReceived_{weather.Name}", c);
+
+                    await _messageHubContext.Clients.All.SendMessageToClient(converted);
                     _logger.LogInformation("Sent info");
                     _logger.LogInformation("--------");
                 }
@@ -145,20 +147,25 @@ namespace JeffAPI.Controllers
             return _weatherRepository.RetrieveCityPairs();
         }
 
+        //[EnableCors("AnyGET")]
+        //[Route("forecast")]
+        //[HttpGet]
+        //public ActionResult<List<CityPairs>> GetForecast()
+        //{
+            
+        //    //return _weatherRepository.RetrieveCityPairs();
+        //}
+
         // PUT: api/Weather/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-
-
         List<WeatherParameters> GetCities()
         {
             return _weatherRepository.GetCities();
         }
-
-
     }
 
 

@@ -4,6 +4,6 @@ namespace JeffShared
 {
 	public interface IWeatherService
 	{
-		Task<WeatherRootObject> GetForecast(string id);
+		Task<WeatherRootObject> GetCurrent(string id);
 	}
 }

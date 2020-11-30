@@ -46,6 +46,7 @@ namespace JeffAPI
                 logging.AddFilter("Microsoft.AspNetCore.Hosting.Internal.WebHost", LogLevel.Warning);
                 logging.AddFilter("Microsoft.AspNetCore.Server.Kestrel", LogLevel.Warning);
                 logging.AddFilter("Microsoft.AspNetCore.Mvc", LogLevel.Warning);
+                logging.AddFilter("Microsoft.AspNetCore.Cors.Infrastructure.CorsService", LogLevel.Warning);
             })
             .UseNLog();
     }

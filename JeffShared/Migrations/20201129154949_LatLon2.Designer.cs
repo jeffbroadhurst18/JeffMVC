@@ -4,14 +4,16 @@ using JeffShared.WeatherModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace JeffShared.Migrations
 {
     [DbContext(typeof(WeatherDBContext))]
-    partial class WeatherDBContextModelSnapshot : ModelSnapshot
+    [Migration("20201129154949_LatLon2")]
+    partial class LatLon2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

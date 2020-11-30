@@ -15,9 +15,14 @@ namespace JeffShared
 			_client = client;
 		}
 
-		public async Task<WeatherRootObject> GetForecast(string id)
+		public async Task<WeatherRootObject> GetCurrent(string id)
 		{
 			return await _client.GetWeatherAsync(id);
 		}
+
+		public async Task<WeatherRootObject> GetForecast(string id)
+        {
+			return await _client.GetForecastAsync(id);
+        }
 	}
 }

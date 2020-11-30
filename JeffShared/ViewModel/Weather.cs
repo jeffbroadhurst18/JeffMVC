@@ -35,5 +35,7 @@ namespace JeffShared.ViewModel
 		public string Name { get; set; }
 		public string Country { get; set; }
 		public int TimeLag { get; set; }
-	}
+        public double Lat { get; set; }
+        public double Lon { get; set; }
+    }
 }
