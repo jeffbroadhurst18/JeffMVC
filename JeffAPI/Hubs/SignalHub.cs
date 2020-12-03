@@ -34,22 +34,24 @@ namespace JeffAPI.Hubs
 
         public async Task<Task> SendManual(string name, string country)
         {
+            var year = DateTime.Now.Year;
             var weatherData = await _weatherService.GetCurrent($"{name},{country}");
             var weather = _mapper.Map<JeffShared.ViewModel.Weather>(weatherData);
-            weather.AnnualMax = _weatherRepository.GetAnnualMax(name);
-            weather.AnnualMin = _weatherRepository.GetAnnualMin(name);
-            weather.MonthlyMax = _weatherRepository.GetMonthlyMax(name, DateTime.Now.Month);
-            weather.MonthlyMin = _weatherRepository.GetMonthlyMin(name, DateTime.Now.Month);
+            weather.AnnualMax = _weatherRepository.GetAnnualMax(name, year);
+            weather.AnnualMin = _weatherRepository.GetAnnualMin(name, year);
+            weather.MonthlyMax = _weatherRepository.GetMonthlyMax(name, DateTime.Now.Month, year);
+            weather.MonthlyMin = _weatherRepository.GetMonthlyMin(name, DateTime.Now.Month, year);
             weather.Query = new WeatherParameters
             {
                 Name = name,
                 Country = country,
-                TimeLag = 0
+                TimeLag = 0,
+                Year = year
             };
             var jString = JsonConvert.SerializeObject(weather);
             return Clients.All.SendMessageToClient(jString);
         }
-    } 
+    }
 
     public interface ITypedHubClient
     {

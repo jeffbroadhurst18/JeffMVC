@@ -10,12 +10,12 @@ namespace JeffShared.WeatherModels
 		List<WeatherParameters> GetCities();
 		List<Readings> GetHistory(string name, int hours);
 		List<Readings> GetHistory(string name);
-        WeatherSummary GetMonthlyData(string city,int month);
-		List<WeatherSummary> GetMonthlyData(string city);
-		TemperatureDay GetAnnualMax(string name);
-		TemperatureDay GetAnnualMin(string name);
-		TemperatureDay GetMonthlyMax(string name, int month);
-		TemperatureDay GetMonthlyMin(string name, int month);
+        WeatherSummary GetMonthlyData(string city,int month, int year);
+		List<WeatherSummary> GetMonthlyData(string city, int year);
+		TemperatureDay GetAnnualMax(string name, int year);
+		TemperatureDay GetAnnualMin(string name, int year);
+		TemperatureDay GetMonthlyMax(string name, int month, int year);
+		TemperatureDay GetMonthlyMin(string name, int month, int year);
 		void SetCityPairs(CityPairs cityPairs);
 		void DeleteCityPairs(int cityPairId);
 		List<CityPairs> RetrieveCityPairs();

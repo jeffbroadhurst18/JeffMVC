@@ -62,10 +62,10 @@ namespace JeffAPI.Controllers
                 {
                     var weatherData = await _weatherService.GetCurrent($"{ weatherParameters.Name},{weatherParameters.Country}");
                     weather = _mapper.Map<JeffShared.ViewModel.Weather>(weatherData);
-                    weather.AnnualMax = _weatherRepository.GetAnnualMax(data.Name);
-                    weather.AnnualMin = _weatherRepository.GetAnnualMin(data.Name);
-                    weather.MonthlyMax = _weatherRepository.GetMonthlyMax(data.Name, DateTime.Now.Month);
-                    weather.MonthlyMin = _weatherRepository.GetMonthlyMin(data.Name, DateTime.Now.Month);
+                    weather.AnnualMax = _weatherRepository.GetAnnualMax(data.Name, data.Year);
+                    weather.AnnualMin = _weatherRepository.GetAnnualMin(data.Name, data.Year);
+                    weather.MonthlyMax = _weatherRepository.GetMonthlyMax(data.Name, DateTime.Now.Month, data.Year);
+                    weather.MonthlyMin = _weatherRepository.GetMonthlyMin(data.Name, DateTime.Now.Month, data.Year);
                     weather.Query = weatherParameters;
                     // Save data in cache.
                     //	_cache.Set(cacheKey, weather, _cacheExpirationOptions);
@@ -99,7 +99,15 @@ namespace JeffAPI.Controllers
         [Route("history/{name}/{hours}")]
         public ActionResult<List<Readings>> GetHistory(string name, int hours)
         {
-            return _weatherRepository.GetHistory(name, hours);
+            try
+            {
+                return _weatherRepository.GetHistory(name, hours);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("ERROR: " + ex.Message + " " + ex.StackTrace);
+                throw;
+            }
         }
 
         [EnableCors("AnyGET")]
@@ -111,16 +119,34 @@ namespace JeffAPI.Controllers
 
         [EnableCors("AnyGET")]
         [Route("monthly/{city}/{month}")]
-        public ActionResult<WeatherSummary> GetMonthlyData(string city, int month)
+        public ActionResult<WeatherSummary> GetMonthlyData(string city, int month, int year)
         {
-            return _weatherRepository.GetMonthlyData(city, month);
+            try
+            {
+                if (year == 0) { year = DateTime.Now.Year; }
+                return _weatherRepository.GetMonthlyData(city, month, year);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("ERROR: " + ex.Message + " " + ex.StackTrace);
+                throw;
+            }
         }
 
         [EnableCors("AnyGET")]
         [Route("monthly/{city}")]
-        public ActionResult<List<WeatherSummary>> GetMonthlyData(string city)
+        public ActionResult<List<WeatherSummary>> GetMonthlyData(string city, int year)
         {
-            return _weatherRepository.GetMonthlyData(city);
+            try
+            {
+                if (year == 0) { year = DateTime.Now.Year; }
+                return _weatherRepository.GetMonthlyData(city, year);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("ERROR: " + ex.Message + " " + ex.StackTrace);
+                throw;
+            }
         }
         // POST: api/Weather
         [EnableCors("AnyGET")]
@@ -152,7 +178,7 @@ namespace JeffAPI.Controllers
         //[HttpGet]
         //public ActionResult<List<CityPairs>> GetForecast()
         //{
-            
+
         //    //return _weatherRepository.RetrieveCityPairs();
         //}
 

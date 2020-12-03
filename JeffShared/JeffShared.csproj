@@ -42,6 +42,8 @@
     <Compile Include="Migrations\20201129154638_LatLon.Designer.cs" />
     <Compile Include="Migrations\20201129154949_LatLon2.cs" />
     <Compile Include="Migrations\20201129154949_LatLon2.Designer.cs" />
+    <Compile Include="Migrations\20201202194601_MinMaxYear.cs" />
+    <Compile Include="Migrations\20201202194601_MinMaxYear.Designer.cs" />
     <Compile Include="Migrations\WeatherDBContextModelSnapshot.cs" />
   </ItemGroup>
 

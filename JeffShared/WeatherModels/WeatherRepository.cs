@@ -46,20 +46,22 @@ namespace JeffShared.WeatherModels
             return readings;
         }
 
-        public WeatherSummary GetMonthlyData(string city, int month)
+        public WeatherSummary GetMonthlyData(string city, int month, int year)
         {
-            var summary = _context.Readings.Include(c => c.City)
-                                            .Where(r => r.City.Name == city && r.CurrentTime.Month == month)
+            //var summary = _context.Readings.Include(c => c.City)
+            var summary = _context.Readings.Where(r => r.City.Name == city && r.CurrentTime.Month == month && r.CurrentTime.Year == year)
                                             .GroupBy(x =>
                                             new
                                             {
                                                 x.City.Name,
-                                                x.CurrentTime.Month
+                                                x.CurrentTime.Month,
+                                                x.CurrentTime.Year
                                             },
             (key, group) => new WeatherSummary
             {
                 City = key.Name,
                 Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(key.Month),
+                Year = key.Year,
                 MaxTemp = Truncate(group.Max(t => t.Temperature), 1),
                 MinTemp = Truncate(group.Min(t => t.Temperature), 1),
                 AvgTemp = Truncate(group.Average(t => t.Temperature), 1),
@@ -69,16 +71,18 @@ namespace JeffShared.WeatherModels
             }).First();
 
             List<DailySummary> dsList = _context.Readings.Include(c => c.City)
-                                .Where(r => r.City.Name == city && r.CurrentTime.Month == month)
+                                .Where(r => r.City.Name == city && r.CurrentTime.Month == month && r.CurrentTime.Year == year)
                                 .GroupBy(x =>
                                new
                                {
                                    x.City.Name,
+                                   x.CurrentTime.Year,
                                    x.CurrentTime.Month,
                                    x.CurrentTime.Day
                                },
                                 (key, group) => new DailySummary
                                 {
+                                    Year = key.Year,
                                     Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(key.Month),
                                     Day = key.Day,
                                     AvgTemp = Truncate(group.Average(t => t.Temperature), 1),
@@ -90,14 +94,14 @@ namespace JeffShared.WeatherModels
             return summary;
         }
 
-        public List<WeatherSummary> GetMonthlyData(string city)
+        public List<WeatherSummary> GetMonthlyData(string city, int year)
         {
             var monthlyList = new List<WeatherSummary>();
             var currentMonth = DateTime.Now.Month;
 
             for (var i = 0; i < currentMonth; i++)
             {
-                monthlyList.Add(GetMonthlyData(city, i + 1));
+                monthlyList.Add(GetMonthlyData(city, i + 1, year));
             }
             return monthlyList;
         }
@@ -108,75 +112,48 @@ namespace JeffShared.WeatherModels
             return System.Math.Truncate(value * mult) / mult;
         }
 
-        public TemperatureDay GetAnnualMax(string name)
+        public TemperatureDay GetAnnualMax(string name, int year)
         {
             return _context.MinMaxTemps.Include(c => c.City)
-                .Where(c => c.City.Name == name)
+                .Where(c => c.City.Name == name && c.Year == year)
                 .Select(g => new TemperatureDay()
                 {
                     TempDate = g.MaxDate,
                     TempVal = g.MaxTemperature
                 }).OrderByDescending(p => p.TempVal).First();
-
-            //return _context.Readings.Include(c => c.City)
-            //                    .Where(r => r.City.Name == name).Select(td => new TemperatureDay()
-            //                    {
-            //                        TempDate = new DateTime(td.CurrentTime.Year, td.CurrentTime.Month, td.CurrentTime.Day),
-            //                        TempVal = td.Temperature
-            //                    }).OrderByDescending(z => z.TempVal).First();
         }
 
-        public TemperatureDay GetAnnualMin(string name)
+        public TemperatureDay GetAnnualMin(string name, int year)
         {
             return _context.MinMaxTemps.Include(c => c.City)
-                .Where(c => c.City.Name == name)
+                .Where(c => c.City.Name == name && c.Year == year)
                 .Select(g => new TemperatureDay()
                 {
                     TempDate = g.MinDate,
                     TempVal = g.MinTemperature
                 }).OrderBy(p => p.TempVal).First();
-
-            //return _context.Readings.Include(c => c.City)
-            //                    .Where(r => r.City.Name == name).Select(td => new TemperatureDay()
-            //                    {
-            //                        TempDate = new DateTime(td.CurrentTime.Year, td.CurrentTime.Month, td.CurrentTime.Day),
-            //                        TempVal = td.Temperature
-            //                    }).OrderBy(z => z.TempVal).First();
         }
 
-        public TemperatureDay GetMonthlyMax(string name, int month)
+        public TemperatureDay GetMonthlyMax(string name, int month, int year)
         {
             return _context.MinMaxTemps.Include(c => c.City)
-                    .Where(c => c.City.Name == name && c.Month == month)
+                    .Where(c => c.City.Name == name && c.Month == month && c.Year == year)
                     .Select(r => new TemperatureDay()
                     {
                         TempDate = r.MaxDate,
                         TempVal = r.MaxTemperature
                     }).FirstOrDefault();
-
-            //return _context.Readings.Include(c => c.City)
-            //                    .Where(r => r.City.Name == name && r.CurrentTime.Month == month).Select(td => new TemperatureDay()
-            //                    {
-            //                        TempDate = new DateTime(td.CurrentTime.Year, td.CurrentTime.Month, td.CurrentTime.Day),
-            //                        TempVal = td.Temperature
-            //                    }).OrderByDescending(z => z.TempVal).First();
         }
 
-        public TemperatureDay GetMonthlyMin(string name, int month)
+        public TemperatureDay GetMonthlyMin(string name, int month, int year)
         {
             return _context.MinMaxTemps.Include(c => c.City)
-                    .Where(c => c.City.Name == name && c.Month == month)
+                    .Where(c => c.City.Name == name && c.Month == month && c.Year == year)
                     .Select(r => new TemperatureDay()
                     {
                         TempDate = r.MinDate,
                         TempVal = r.MinTemperature
                     }).FirstOrDefault();
-            //return _context.Readings.Include(c => c.City)
-            //                    .Where(r => r.City.Name == name && r.CurrentTime.Month == month).Select(td => new TemperatureDay()
-            //                    {
-            //                        TempDate = new DateTime(td.CurrentTime.Year, td.CurrentTime.Month, td.CurrentTime.Day),
-            //                        TempVal = td.Temperature
-            //                    }).OrderBy(z => z.TempVal).First();
         }
 
         public void SetCityPairs(CityPairs cityPairs)

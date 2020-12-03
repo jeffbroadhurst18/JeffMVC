@@ -9,6 +9,7 @@ namespace JeffShared.WeatherModels
         public int Id { get; set; }
         public int CityId { get; set; }
         public int Month { get; set; }
+        public int Year { get; set; }
         public double MaxTemperature { get; set; }
         public double MinTemperature { get; set; }
         public DateTime MinDate { get; set; }
