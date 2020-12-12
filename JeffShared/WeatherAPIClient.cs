@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using JeffShared.ViewModel;
+using JeffShared.WeatherModels;
 
 namespace JeffShared
 {
@@ -26,12 +28,12 @@ namespace JeffShared
 			_key = _configuration.GetSection("Weather").GetSection("Key").Value;
 		}
 
-        public async Task<WeatherRootObject> GetForecastAsync(string id)
+        public async Task<Forecast> GetForecastAsync(double lat,double lon)
         {
-			var encoded = WebUtility.UrlEncode("lat = 33.441792 & lon = -94.037689 & exclude = current,minutely,daily,alerts");
-
-			var forecast = JsonConvert.DeserializeObject<WeatherRootObject>(await _client.GetStringAsync($"{_baseForecastUrl}{encoded}&appid={_key}"));
-			return forecast;
+			var queryString = $"lat={lat}&lon={lon}&exclude=current,minutely,daily,alerts";
+			var res = await _client.GetStringAsync($"{_baseForecastUrl}{queryString}&appid={_key}");
+			var forecast = JsonConvert.DeserializeObject<Forecast>(res);
+			return ConvertTheDate(forecast);
 		}
 
         public async Task<WeatherRootObject> GetWeatherAsync(string id)
@@ -40,6 +42,23 @@ namespace JeffShared
 			var forecast = JsonConvert.DeserializeObject<WeatherRootObject>(await _client.GetStringAsync($"{_baseUrl}{encoded}&appid={_key}"));
 			return forecast;
 		}
+
+		public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
+		{
+			// Unix timestamp is seconds past epoch
+			System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+			dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
+			return dtDateTime;
+		}
+
+		public static Forecast ConvertTheDate(Forecast forecast)
+        {
+			foreach(var h in forecast.hourly)
+            {
+				h.dtDate = UnixTimeStampToDateTime(h.dt);
+            }
+			return forecast;
+        }
 	}
 
 }

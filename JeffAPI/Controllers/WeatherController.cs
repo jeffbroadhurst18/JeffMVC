@@ -118,7 +118,7 @@ namespace JeffAPI.Controllers
         }
 
         [EnableCors("AnyGET")]
-        [Route("monthly/{city}/{month}")]
+        [Route("monthly/{city}/{month}/{year}")]
         public ActionResult<WeatherSummary> GetMonthlyData(string city, int month, int year)
         {
             try
@@ -173,14 +173,13 @@ namespace JeffAPI.Controllers
             return _weatherRepository.RetrieveCityPairs();
         }
 
-        //[EnableCors("AnyGET")]
-        //[Route("forecast")]
-        //[HttpGet]
-        //public ActionResult<List<CityPairs>> GetForecast()
-        //{
-
-        //    //return _weatherRepository.RetrieveCityPairs();
-        //}
+        [EnableCors("AnyGET")]
+        [Route("forecast")]
+        [HttpGet]
+        public async Task<ActionResult<Forecast>> GetForecast(double lat, double lon)
+        {
+            return await _weatherService.GetForecastAsync(lat,lon);
+        }
 
         // PUT: api/Weather/5
         [HttpPut("{id}")]

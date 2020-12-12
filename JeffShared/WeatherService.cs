@@ -1,4 +1,6 @@
-﻿using System;
+﻿using JeffShared.ViewModel;
+using JeffShared.WeatherModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +22,9 @@ namespace JeffShared
 			return await _client.GetWeatherAsync(id);
 		}
 
-		public async Task<WeatherRootObject> GetForecast(string id)
+		public async Task<Forecast> GetForecastAsync(double lat, double lon)
         {
-			return await _client.GetForecastAsync(id);
+			return await _client.GetForecastAsync(lat,lon);
         }
 	}
 }
