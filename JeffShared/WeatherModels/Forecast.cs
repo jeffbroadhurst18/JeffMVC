@@ -54,4 +54,23 @@ namespace JeffShared.WeatherModels
         public int timezone_offset { get; set; }
         public List<Hourly> hourly { get; set; }
     }
+
+    public class FormattedForecast
+    {
+        public double lat { get; set; }
+        public double lon { get; set; }
+        public string timezone { get; set; }
+        public int timezone_offset { get; set; }
+        public List<FormattedHourly> hourly { get; set; }
+    }
+
+    public class FormattedHourly
+    {
+        public DateTime dtDate { get; set; }
+        public double temp { get; set; }
+        public double feels_like { get; set; }
+        public string direction { get; set; }
+        public double wind { get; set; }
+        public MiniForecast weather { get; set; }
+    }
 }

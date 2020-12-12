@@ -7,6 +7,6 @@ namespace JeffShared
 	public interface IWeatherService
 	{
 		Task<WeatherRootObject> GetCurrent(string id);
-		Task<Forecast> GetForecastAsync(double lat, double lon);
+		Task<FormattedForecast> GetForecastAsync(double lat, double lon);
 	}
 }

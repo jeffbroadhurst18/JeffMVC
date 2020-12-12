@@ -176,7 +176,7 @@ namespace JeffAPI.Controllers
         [EnableCors("AnyGET")]
         [Route("forecast")]
         [HttpGet]
-        public async Task<ActionResult<Forecast>> GetForecast(double lat, double lon)
+        public async Task<ActionResult<FormattedForecast>> GetForecast(double lat, double lon)
         {
             return await _weatherService.GetForecastAsync(lat,lon);
         }
