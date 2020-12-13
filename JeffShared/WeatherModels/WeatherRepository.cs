@@ -27,7 +27,9 @@ namespace JeffShared.WeatherModels
             {
                 Name = c.Name,
                 Country = c.Country,
-                TimeLag = c.TimeLag
+                TimeLag = c.TimeLag,
+                Lat = c.Lat,
+                Lon = c.Lon
             }).ToList();
 
             return dbCities;
