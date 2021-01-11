@@ -37,7 +37,7 @@ namespace JeffShared.WeatherModels
 
         public List<Readings> GetHistory(string name, int hours)
         {
-            List<Readings> readings = _context.Readings.Where(r => r.City.Name == name && r.CurrentTime > DateTime.Now.AddDays(-3)).Include(c => c.City).OrderByDescending(d => d.CurrentTime).Take(hours).ToList();
+            List<Readings> readings = _context.Readings.Include(c => c.City).Where(r => r.City.Name == name).OrderByDescending(d => d.CurrentTime).Take(hours).ToList();
             return readings;
         }
 
